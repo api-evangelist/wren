@@ -1,0 +1,302 @@
+openapi: 3.1.0
+info:
+  title: Wren Credits Offset Orders API
+  description: The Wren API is a JSON REST API that lets you offset carbon dioxide through Wren's portfolio of verified carbon sequestration projects. Create offset orders by tonnage, fund specific projects by dollar amount, plant trees, manage a prepaid credit balance, and list portfolios, purchases, and donations. Most endpoints require an API token (team live token, wren_test_ sandbox token, or legacy personal token) via HTTP Basic or Bearer auth.
+  version: '2026-07-21'
+  contact:
+    name: Wren Support
+    email: support@wren.co
+    url: https://www.wren.co/faq
+  termsOfService: https://www.wren.co/terms-of-use
+servers:
+- url: https://www.wren.co
+  description: Production
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Offset Orders
+  description: Create and list carbon offset orders by tonnage
+paths:
+  /api/offset-orders:
+    post:
+      operationId: createOffsetOrder
+      tags:
+      - Offset Orders
+      summary: Create offset orders
+      description: Creates offset orders by allocating a given number of tons across the projects in a portfolio. Funds are distributed according to the portfolio's allocation percentages. Test tokens (wren_test_...) return canned responses with "test":true and test_oo_ prefixed IDs without charges or side effects.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OffsetOrderRequest'
+            examples:
+              basic:
+                summary: Offset one ton against a portfolio
+                value:
+                  tons: 1
+                  portfolioId: 12
+                  note: Monthly offset
+              credits:
+                summary: Pay from the prepaid credit balance
+                value:
+                  tons: 0.5
+                  portfolioId: 12
+                  paymentMethod: credits
+              dryRun:
+                summary: Preview only, no charge
+                value:
+                  tons: 1
+                  portfolioId: 12
+                  dryRun: true
+              onBehalfOf:
+                summary: Order for an end customer
+                value:
+                  tons: 1
+                  portfolioId: 12
+                  onBehalfOfName: Jane Customer
+                  onBehalfOfEmail: jane@example.com
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OffsetOrderRequest'
+      responses:
+        '200':
+          description: Offset order created (or previewed when dryRun is true)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OffsetOrderResponse'
+              examples:
+                success:
+                  value:
+                    amountCharged: 1040
+                    currency: USD
+                    tons: 0.45
+                    id: ch_12345
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '402':
+          $ref: '#/components/responses/InsufficientCredits'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    get:
+      operationId: listOffsetOrders
+      tags:
+      - Offset Orders
+      summary: List your offset orders
+      description: Returns the authenticated user's offset orders with aggregate stats.
+      responses:
+        '200':
+          description: The user's offset orders
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  offsetOrders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OffsetOrder'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/offset-orders/public:
+    get:
+      operationId: listPublicOffsetOrders
+      tags:
+      - Offset Orders
+      summary: List public offset orders
+      description: Lists public offset orders (cached) for leaderboards and feeds. Documented as requiring no authentication.
+      security: []
+      responses:
+        '200':
+          description: Public offset orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OffsetOrder'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/offset-orders/certificate/by-group/{id}:
+    get:
+      operationId: getOffsetCertificateByGroup
+      tags:
+      - Offset Orders
+      summary: Get the impact certificate for an order group
+      description: Fetch the certificate for an offset order group using the order group id returned when the order was created.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Order group id returned by createOffsetOrder.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Certificate for the order group
+        '403':
+          $ref: '#/components/responses/Forbidden'
+components:
+  schemas:
+    OffsetOrderRequest:
+      type: object
+      required:
+      - tons
+      properties:
+        tons:
+          type: number
+          description: Amount of CO2e to offset in tonnes. Must be positive.
+        portfolioId:
+          type: number
+          description: 'Portfolio ID for allocation. Default: Wren Climate Fund.'
+        note:
+          type: string
+          description: Note attached to each order.
+        dryRun:
+          type: boolean
+          description: If true, no charge is made; returns preview only.
+        sendReceiptEmail:
+          type: boolean
+          description: If true, sends a receipt email when dryRun is false.
+        paymentMethod:
+          type: string
+          enum:
+          - stripe
+          - credits
+          default: stripe
+          description: When credits, deducts from the credit balance instead of charging Stripe. No $1 minimum when using credits.
+        onBehalfOfName:
+          type: string
+          maxLength: 200
+          description: Name of the end customer shown as purchaser on the impact certificate.
+        onBehalfOfEmail:
+          type: string
+          maxLength: 320
+          description: Email of the end customer, stored alongside the order.
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        cost_per_ton:
+          type: number
+        percentage:
+          type: number
+          description: Allocation fraction (e.g. 0.2 = 20%).
+        image_url:
+          type: string
+        certification_status:
+          type: string
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Human-readable description of the validation or auth failure.
+    OffsetOrderResponse:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          description: Stripe charge ID / order group id, or null when dryRun=true.
+        amountCharged:
+          type: number
+          description: In the user currency's smallest denomination (e.g. 1040 = $10.40 USD). Fractional cents round up (Math.ceil).
+        currency:
+          type: string
+        tons:
+          type: number
+        portfolio:
+          $ref: '#/components/schemas/Portfolio'
+        paymentMethod:
+          type: string
+          description: Present only on credits responses.
+        creditsRemaining:
+          type: integer
+          description: Remaining credit balance in USD cents; present only on credits responses.
+        test:
+          type: boolean
+          description: Present and true only in test mode responses.
+    Portfolio:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        cost_per_ton:
+          type: number
+          description: Portfolio-level cost in USD per ton.
+        image_url:
+          type: string
+        projects:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
+    OffsetOrder:
+      type: object
+      properties:
+        id:
+          type: string
+        tons:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+        note:
+          type: string
+  responses:
+    Forbidden:
+      description: Missing or invalid authentication, or account not eligible for the operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid payload, missing required fields, or validation failure.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InsufficientCredits:
+      description: Insufficient credits - the team's credit balance is below the order cost.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'Recommended for curl: pass the API token as the username with an empty password (-u [api_token]:). Token types: team live token (UUID), team test token (wren_test_ prefix, sandbox), legacy personal token (UUID).'
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Authorization: Bearer [api_token] with the same token types as Basic auth.'
+externalDocs:
+  description: Wren API Documentation
+  url: https://www.wren.co/docs/api
+x-provenance:
+  generated: '2026-07-21'
+  method: derived
+  source:
+  - https://www.wren.co/docs/api
+  - https://www.wren.co/docs/api/wren-api.postman_collection.json
+  - https://www.wren.co/docs/api/offset-orders
+  - https://www.wren.co/docs/api/project-orders
+  - https://www.wren.co/docs/api/tree-orders
+  - https://www.wren.co/docs/api/portfolios
+  - https://www.wren.co/docs/api/purchases
+  - https://www.wren.co/docs/api/project-donations
+  - https://www.wren.co/docs/api/credits
+  note: Wren publishes complete REST reference documentation and a Postman collection but no OpenAPI document. This spec was derived faithfully from the published docs and collection by the API Evangelist enrichment pipeline; it is not an official Wren artifact.

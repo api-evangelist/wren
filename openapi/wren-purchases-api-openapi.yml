@@ -1,0 +1,103 @@
+openapi: 3.1.0
+info:
+  title: Wren Credits Purchases API
+  description: The Wren API is a JSON REST API that lets you offset carbon dioxide through Wren's portfolio of verified carbon sequestration projects. Create offset orders by tonnage, fund specific projects by dollar amount, plant trees, manage a prepaid credit balance, and list portfolios, purchases, and donations. Most endpoints require an API token (team live token, wren_test_ sandbox token, or legacy personal token) via HTTP Basic or Bearer auth.
+  version: '2026-07-21'
+  contact:
+    name: Wren Support
+    email: support@wren.co
+    url: https://www.wren.co/faq
+  termsOfService: https://www.wren.co/terms-of-use
+servers:
+- url: https://www.wren.co
+  description: Production
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Purchases
+  description: List purchase summaries with certificate URLs
+paths:
+  /api/purchases:
+    get:
+      operationId: listPurchases
+      tags:
+      - Purchases
+      summary: List your purchase summaries
+      description: Returns purchase summaries for the authenticated user - Stripe charges grouped by charge ID with totals and links to impact certificates, sorted by createdAt descending. Test tokens are not currently supported on this endpoint.
+      responses:
+        '200':
+          description: Purchase summaries
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  purchases:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Purchase'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Human-readable description of the validation or auth failure.
+    Purchase:
+      type: object
+      properties:
+        stripeChargeId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        totalAmountPaidByCustomer:
+          type: integer
+          description: Sum of amounts paid across all orders in this charge (USD cents).
+        totalTons:
+          type: number
+          description: Sum of certified offset tons only.
+        hasOffsetOrders:
+          type: boolean
+        hasProjectDonations:
+          type: boolean
+        certificateUrl:
+          type: string
+          description: Link to the impact certificate page for this purchase.
+  responses:
+    Forbidden:
+      description: Missing or invalid authentication, or account not eligible for the operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'Recommended for curl: pass the API token as the username with an empty password (-u [api_token]:). Token types: team live token (UUID), team test token (wren_test_ prefix, sandbox), legacy personal token (UUID).'
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Authorization: Bearer [api_token] with the same token types as Basic auth.'
+externalDocs:
+  description: Wren API Documentation
+  url: https://www.wren.co/docs/api
+x-provenance:
+  generated: '2026-07-21'
+  method: derived
+  source:
+  - https://www.wren.co/docs/api
+  - https://www.wren.co/docs/api/wren-api.postman_collection.json
+  - https://www.wren.co/docs/api/offset-orders
+  - https://www.wren.co/docs/api/project-orders
+  - https://www.wren.co/docs/api/tree-orders
+  - https://www.wren.co/docs/api/portfolios
+  - https://www.wren.co/docs/api/purchases
+  - https://www.wren.co/docs/api/project-donations
+  - https://www.wren.co/docs/api/credits
+  note: Wren publishes complete REST reference documentation and a Postman collection but no OpenAPI document. This spec was derived faithfully from the published docs and collection by the API Evangelist enrichment pipeline; it is not an official Wren artifact.

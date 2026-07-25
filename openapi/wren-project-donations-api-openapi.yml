@@ -1,0 +1,99 @@
+openapi: 3.1.0
+info:
+  title: Wren Credits Project Donations API
+  description: The Wren API is a JSON REST API that lets you offset carbon dioxide through Wren's portfolio of verified carbon sequestration projects. Create offset orders by tonnage, fund specific projects by dollar amount, plant trees, manage a prepaid credit balance, and list portfolios, purchases, and donations. Most endpoints require an API token (team live token, wren_test_ sandbox token, or legacy personal token) via HTTP Basic or Bearer auth.
+  version: '2026-07-21'
+  contact:
+    name: Wren Support
+    email: support@wren.co
+    url: https://www.wren.co/faq
+  termsOfService: https://www.wren.co/terms-of-use
+servers:
+- url: https://www.wren.co
+  description: Production
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Project Donations
+  description: List non-offsettable project funding
+paths:
+  /api/project-donations:
+    get:
+      operationId: listProjectDonations
+      tags:
+      - Project Donations
+      summary: List your project donations
+      description: Returns all project donations (funding for non-offsettable projects) for the authenticated user. Test tokens are not currently supported on this endpoint.
+      responses:
+        '200':
+          description: Project donations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectDonation'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Human-readable description of the validation or auth failure.
+    ProjectDonation:
+      type: object
+      properties:
+        id:
+          type: string
+        projectId:
+          type: integer
+        userId:
+          type: integer
+        amountPaidByCustomer:
+          type: number
+          description: Amount in USD cents; sub-cent fractional values can appear on credit-funded sub-dollar orders split across projects.
+        createdAt:
+          type: string
+          format: date-time
+        source:
+          type: string
+          description: Origin of the donation (e.g. public-api).
+        note:
+          type: string
+  responses:
+    Forbidden:
+      description: Missing or invalid authentication, or account not eligible for the operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'Recommended for curl: pass the API token as the username with an empty password (-u [api_token]:). Token types: team live token (UUID), team test token (wren_test_ prefix, sandbox), legacy personal token (UUID).'
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Authorization: Bearer [api_token] with the same token types as Basic auth.'
+externalDocs:
+  description: Wren API Documentation
+  url: https://www.wren.co/docs/api
+x-provenance:
+  generated: '2026-07-21'
+  method: derived
+  source:
+  - https://www.wren.co/docs/api
+  - https://www.wren.co/docs/api/wren-api.postman_collection.json
+  - https://www.wren.co/docs/api/offset-orders
+  - https://www.wren.co/docs/api/project-orders
+  - https://www.wren.co/docs/api/tree-orders
+  - https://www.wren.co/docs/api/portfolios
+  - https://www.wren.co/docs/api/purchases
+  - https://www.wren.co/docs/api/project-donations
+  - https://www.wren.co/docs/api/credits
+  note: Wren publishes complete REST reference documentation and a Postman collection but no OpenAPI document. This spec was derived faithfully from the published docs and collection by the API Evangelist enrichment pipeline; it is not an official Wren artifact.

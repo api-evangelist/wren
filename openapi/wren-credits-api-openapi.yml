@@ -1,0 +1,179 @@
+openapi: 3.1.0
+info:
+  title: Wren Credits API
+  description: The Wren API is a JSON REST API that lets you offset carbon dioxide through Wren's portfolio of verified carbon sequestration projects. Create offset orders by tonnage, fund specific projects by dollar amount, plant trees, manage a prepaid credit balance, and list portfolios, purchases, and donations. Most endpoints require an API token (team live token, wren_test_ sandbox token, or legacy personal token) via HTTP Basic or Bearer auth.
+  version: '2026-07-21'
+  contact:
+    name: Wren Support
+    email: support@wren.co
+    url: https://www.wren.co/faq
+  termsOfService: https://www.wren.co/terms-of-use
+servers:
+- url: https://www.wren.co
+  description: Production
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Credits
+  description: Manage the prepaid credit balance
+paths:
+  /api/credits/top-up:
+    post:
+      operationId: topUpCredits
+      tags:
+      - Credits
+      summary: Add credits to your balance
+      description: Charges the payment method on file and adds the amount to the credit balance. Team tokens top up the team wallet; legacy personal tokens top up the user wallet.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - amountInUsdCents
+              properties:
+                amountInUsdCents:
+                  type: integer
+                  minimum: 100
+                  description: Amount to add in USD cents. Minimum 100 ($1.00).
+            examples:
+              basic:
+                value:
+                  amountInUsdCents: 10000
+      responses:
+        '200':
+          description: Credits added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amountCharged:
+                    type: integer
+                    description: In the user currency's smallest denomination
+                  id:
+                    type: string
+                    description: Stripe charge ID
+                  creditBalance:
+                    type: integer
+                    description: Updated credit balance in USD cents
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/credits/balance:
+    get:
+      operationId: getCreditBalance
+      tags:
+      - Credits
+      summary: Get your current credit balance
+      description: Returns the authenticated team or user's current credit balance. Test tokens return a canned $1,000.00 balance.
+      responses:
+        '200':
+          description: Current credit balance
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  creditBalanceUsdCents:
+                    type: integer
+                    description: Current balance in USD cents (e.g. 10000 = $100.00).
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/credits/ledger:
+    get:
+      operationId: listCreditLedger
+      tags:
+      - Credits
+      summary: List your credit transactions
+      description: Returns the credit transaction history, most recent first. Test tokens return a small canned sample ledger.
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          maximum: 200
+        description: Number of entries to return.
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          default: 0
+        description: Number of entries to skip.
+      responses:
+        '200':
+          description: Credit ledger entries
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  entries:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CreditLedgerEntry'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Human-readable description of the validation or auth failure.
+    CreditLedgerEntry:
+      type: object
+      properties:
+        id:
+          type: string
+        amountUsdCents:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        description:
+          type: string
+  responses:
+    Forbidden:
+      description: Missing or invalid authentication, or account not eligible for the operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid payload, missing required fields, or validation failure.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'Recommended for curl: pass the API token as the username with an empty password (-u [api_token]:). Token types: team live token (UUID), team test token (wren_test_ prefix, sandbox), legacy personal token (UUID).'
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Authorization: Bearer [api_token] with the same token types as Basic auth.'
+externalDocs:
+  description: Wren API Documentation
+  url: https://www.wren.co/docs/api
+x-provenance:
+  generated: '2026-07-21'
+  method: derived
+  source:
+  - https://www.wren.co/docs/api
+  - https://www.wren.co/docs/api/wren-api.postman_collection.json
+  - https://www.wren.co/docs/api/offset-orders
+  - https://www.wren.co/docs/api/project-orders
+  - https://www.wren.co/docs/api/tree-orders
+  - https://www.wren.co/docs/api/portfolios
+  - https://www.wren.co/docs/api/purchases
+  - https://www.wren.co/docs/api/project-donations
+  - https://www.wren.co/docs/api/credits
+  note: Wren publishes complete REST reference documentation and a Postman collection but no OpenAPI document. This spec was derived faithfully from the published docs and collection by the API Evangelist enrichment pipeline; it is not an official Wren artifact.
