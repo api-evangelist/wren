@@ -1,0 +1,711 @@
+x-provenance:
+  generated: '2026-07-21'
+  method: derived
+  source:
+    - https://www.wren.co/docs/api
+    - https://www.wren.co/docs/api/wren-api.postman_collection.json
+    - https://www.wren.co/docs/api/offset-orders
+    - https://www.wren.co/docs/api/project-orders
+    - https://www.wren.co/docs/api/tree-orders
+    - https://www.wren.co/docs/api/portfolios
+    - https://www.wren.co/docs/api/purchases
+    - https://www.wren.co/docs/api/project-donations
+    - https://www.wren.co/docs/api/credits
+  note: Wren publishes complete REST reference documentation and a Postman collection
+    but no OpenAPI document. This spec was derived faithfully from the published docs
+    and collection by the API Evangelist enrichment pipeline; it is not an official
+    Wren artifact.
+openapi: 3.1.0
+info:
+  title: Wren API
+  description: The Wren API is a JSON REST API that lets you offset carbon dioxide
+    through Wren's portfolio of verified carbon sequestration projects. Create offset
+    orders by tonnage, fund specific projects by dollar amount, plant trees, manage
+    a prepaid credit balance, and list portfolios, purchases, and donations. Most
+    endpoints require an API token (team live token, wren_test_ sandbox token, or
+    legacy personal token) via HTTP Basic or Bearer auth.
+  version: '2026-07-21'
+  contact:
+    name: Wren Support
+    email: support@wren.co
+    url: https://www.wren.co/faq
+  termsOfService: https://www.wren.co/terms-of-use
+externalDocs:
+  description: Wren API Documentation
+  url: https://www.wren.co/docs/api
+servers:
+  - url: https://www.wren.co
+    description: Production
+security:
+  - basicAuth: []
+  - bearerAuth: []
+tags:
+  - name: Offset Orders
+    description: Create and list carbon offset orders by tonnage
+  - name: Project Orders
+    description: Fund a specific project by dollar amount
+  - name: Tree Orders
+    description: Create and list tree-planting orders
+  - name: Portfolios
+    description: List available portfolios and their projects
+  - name: Purchases
+    description: List purchase summaries with certificate URLs
+  - name: Project Donations
+    description: List non-offsettable project funding
+  - name: Credits
+    description: Manage the prepaid credit balance
+paths:
+  /api/offset-orders:
+    post:
+      operationId: createOffsetOrder
+      tags: [Offset Orders]
+      summary: Create offset orders
+      description: Creates offset orders by allocating a given number of tons across
+        the projects in a portfolio. Funds are distributed according to the portfolio's
+        allocation percentages. Test tokens (wren_test_...) return canned responses
+        with "test":true and test_oo_ prefixed IDs without charges or side effects.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OffsetOrderRequest'
+            examples:
+              basic:
+                summary: Offset one ton against a portfolio
+                value: {tons: 1, portfolioId: 12, note: Monthly offset}
+              credits:
+                summary: Pay from the prepaid credit balance
+                value: {tons: 0.5, portfolioId: 12, paymentMethod: credits}
+              dryRun:
+                summary: Preview only, no charge
+                value: {tons: 1, portfolioId: 12, dryRun: true}
+              onBehalfOf:
+                summary: Order for an end customer
+                value: {tons: 1, portfolioId: 12, onBehalfOfName: Jane Customer,
+                  onBehalfOfEmail: jane@example.com}
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OffsetOrderRequest'
+      responses:
+        '200':
+          description: Offset order created (or previewed when dryRun is true)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OffsetOrderResponse'
+              examples:
+                success:
+                  value: {amountCharged: 1040, currency: USD, tons: 0.45, id: ch_12345}
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '402':
+          $ref: '#/components/responses/InsufficientCredits'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    get:
+      operationId: listOffsetOrders
+      tags: [Offset Orders]
+      summary: List your offset orders
+      description: Returns the authenticated user's offset orders with aggregate stats.
+      responses:
+        '200':
+          description: The user's offset orders
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  offsetOrders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OffsetOrder'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/offset-orders/public:
+    get:
+      operationId: listPublicOffsetOrders
+      tags: [Offset Orders]
+      summary: List public offset orders
+      description: Lists public offset orders (cached) for leaderboards and feeds.
+        Documented as requiring no authentication.
+      security: []
+      responses:
+        '200':
+          description: Public offset orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OffsetOrder'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/offset-orders/certificate/by-group/{id}:
+    get:
+      operationId: getOffsetCertificateByGroup
+      tags: [Offset Orders]
+      summary: Get the impact certificate for an order group
+      description: Fetch the certificate for an offset order group using the order
+        group id returned when the order was created.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Order group id returned by createOffsetOrder.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Certificate for the order group
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/project-orders:
+    post:
+      operationId: createProjectOrder
+      tags: [Project Orders]
+      summary: Fund a specific project by dollar amount
+      description: Funds a specific project directly by projectId without portfolio
+        allocation. Offsettable projects (cost_per_ton) create offset orders and the
+        response includes impact.tons; non-offsettable projects create project donations.
+        Tree-measured projects are not supported (use /api/tree-orders).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectOrderRequest'
+            examples:
+              basic:
+                value: {projectId: 18, amountInUsdCents: 2500, note: Funding this
+                    project for Q1 usage}
+              credits:
+                value: {projectId: 18, amountInUsdCents: 2500, paymentMethod: credits}
+              dryRun:
+                value: {projectId: 18, amountInUsdCents: 2500, dryRun: true}
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProjectOrderRequest'
+      responses:
+        '200':
+          description: Project order created (or previewed when dryRun is true)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectOrderResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/tree-orders:
+    post:
+      operationId: createTreeOrder
+      tags: [Tree Orders]
+      summary: Create a tree order
+      description: Creates a tree order by number of trees, charging via Stripe or
+        credits. Tree orders are currently fulfilled through the WeForest provider.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TreeOrderRequest'
+            examples:
+              basic:
+                value: {amountOfTrees: 10, note: Tree planting order}
+              credits:
+                value: {amountOfTrees: 10, paymentMethod: credits}
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TreeOrderRequest'
+      responses:
+        '200':
+          description: Tree order created (or previewed when dryRun is true)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TreeOrderResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    get:
+      operationId: listTreeOrders
+      tags: [Tree Orders]
+      summary: List your tree orders
+      responses:
+        '200':
+          description: The user's tree orders
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  treeOrders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TreeOrder'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/tree-orders/preview:
+    post:
+      operationId: previewTreeOrder
+      tags: [Tree Orders]
+      summary: Preview tree order pricing
+      description: Returns pricing information for a tree order without placing it.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [amountOfTrees]
+              properties:
+                amountOfTrees:
+                  type: integer
+                  minimum: 1
+                  description: Number of trees to price.
+            examples:
+              basic:
+                value: {amountOfTrees: 10}
+      responses:
+        '200':
+          description: Tree order pricing preview
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amountOfTrees: {type: integer}
+                  priceInUSD: {type: number}
+                  priceInUserCurrency: {type: number}
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/portfolios:
+    get:
+      operationId: listPortfolios
+      tags: [Portfolios]
+      summary: List available portfolios and projects
+      description: Returns all available portfolios and their project allocations.
+        Works without authentication (preset portfolios only); with a token it may
+        include the user's custom portfolio.
+      security: []
+      parameters:
+        - name: expanded
+          in: query
+          required: false
+          description: If present, returns full CamelCase portfolio objects instead
+            of the public snake_case format.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Available portfolios
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  portfolios:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Portfolio'
+              examples:
+                live:
+                  summary: Live response excerpt (fetched 2026-07-21)
+                  value:
+                    portfolios:
+                      - id: 21
+                        name: Trailblazer
+                        description: A portfolio focused on cutting-edge carbon removal
+                          technology.
+                        cost_per_ton: 401.71
+                        image_url: https://projectwren.imgix.net/trailblazer/trailblazer-icon-square.png
+                        projects:
+                          - id: 18
+                            name: Biochar carbon removal
+                            cost_per_ton: 242.86
+                            percentage: 0.2099
+                            certification_status: standard 2023
+  /api/purchases:
+    get:
+      operationId: listPurchases
+      tags: [Purchases]
+      summary: List your purchase summaries
+      description: Returns purchase summaries for the authenticated user - Stripe
+        charges grouped by charge ID with totals and links to impact certificates,
+        sorted by createdAt descending. Test tokens are not currently supported on
+        this endpoint.
+      responses:
+        '200':
+          description: Purchase summaries
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  purchases:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Purchase'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/project-donations:
+    get:
+      operationId: listProjectDonations
+      tags: [Project Donations]
+      summary: List your project donations
+      description: Returns all project donations (funding for non-offsettable projects)
+        for the authenticated user. Test tokens are not currently supported on this
+        endpoint.
+      responses:
+        '200':
+          description: Project donations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectDonation'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/credits/top-up:
+    post:
+      operationId: topUpCredits
+      tags: [Credits]
+      summary: Add credits to your balance
+      description: Charges the payment method on file and adds the amount to the
+        credit balance. Team tokens top up the team wallet; legacy personal tokens
+        top up the user wallet.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [amountInUsdCents]
+              properties:
+                amountInUsdCents:
+                  type: integer
+                  minimum: 100
+                  description: Amount to add in USD cents. Minimum 100 ($1.00).
+            examples:
+              basic:
+                value: {amountInUsdCents: 10000}
+      responses:
+        '200':
+          description: Credits added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amountCharged: {type: integer, description: In the user currency's
+                      smallest denomination}
+                  id: {type: string, description: Stripe charge ID}
+                  creditBalance: {type: integer, description: Updated credit balance
+                      in USD cents}
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/credits/balance:
+    get:
+      operationId: getCreditBalance
+      tags: [Credits]
+      summary: Get your current credit balance
+      description: Returns the authenticated team or user's current credit balance.
+        Test tokens return a canned $1,000.00 balance.
+      responses:
+        '200':
+          description: Current credit balance
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  creditBalanceUsdCents:
+                    type: integer
+                    description: Current balance in USD cents (e.g. 10000 = $100.00).
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/credits/ledger:
+    get:
+      operationId: listCreditLedger
+      tags: [Credits]
+      summary: List your credit transactions
+      description: Returns the credit transaction history, most recent first. Test
+        tokens return a small canned sample ledger.
+      parameters:
+        - name: limit
+          in: query
+          schema: {type: integer, default: 50, maximum: 200}
+          description: Number of entries to return.
+        - name: offset
+          in: query
+          schema: {type: integer, default: 0}
+          description: Number of entries to skip.
+      responses:
+        '200':
+          description: Credit ledger entries
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  entries:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CreditLedgerEntry'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'Recommended for curl: pass the API token as the username with
+        an empty password (-u [api_token]:). Token types: team live token (UUID),
+        team test token (wren_test_ prefix, sandbox), legacy personal token (UUID).'
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Authorization: Bearer [api_token] with the same token types as
+        Basic auth.'
+  responses:
+    BadRequest:
+      description: Invalid payload, missing required fields, or validation failure.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Missing or invalid authentication, or account not eligible for
+        the operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InsufficientCredits:
+      description: Insufficient credits - the team's credit balance is below the
+        order cost.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Human-readable description of the validation or auth failure.
+    OffsetOrderRequest:
+      type: object
+      required: [tons]
+      properties:
+        tons:
+          type: number
+          description: Amount of CO2e to offset in tonnes. Must be positive.
+        portfolioId:
+          type: number
+          description: 'Portfolio ID for allocation. Default: Wren Climate Fund.'
+        note:
+          type: string
+          description: Note attached to each order.
+        dryRun:
+          type: boolean
+          description: If true, no charge is made; returns preview only.
+        sendReceiptEmail:
+          type: boolean
+          description: If true, sends a receipt email when dryRun is false.
+        paymentMethod:
+          type: string
+          enum: [stripe, credits]
+          default: stripe
+          description: When credits, deducts from the credit balance instead of charging
+            Stripe. No $1 minimum when using credits.
+        onBehalfOfName:
+          type: string
+          maxLength: 200
+          description: Name of the end customer shown as purchaser on the impact
+            certificate.
+        onBehalfOfEmail:
+          type: string
+          maxLength: 320
+          description: Email of the end customer, stored alongside the order.
+    OffsetOrderResponse:
+      type: object
+      properties:
+        id:
+          type: [string, 'null']
+          description: Stripe charge ID / order group id, or null when dryRun=true.
+        amountCharged:
+          type: number
+          description: In the user currency's smallest denomination (e.g. 1040 =
+            $10.40 USD). Fractional cents round up (Math.ceil).
+        currency:
+          type: string
+        tons:
+          type: number
+        portfolio:
+          $ref: '#/components/schemas/Portfolio'
+        paymentMethod:
+          type: string
+          description: Present only on credits responses.
+        creditsRemaining:
+          type: integer
+          description: Remaining credit balance in USD cents; present only on credits
+            responses.
+        test:
+          type: boolean
+          description: Present and true only in test mode responses.
+    OffsetOrder:
+      type: object
+      properties:
+        id: {type: string}
+        tons: {type: number}
+        createdAt: {type: string, format: date-time}
+        note: {type: string}
+    ProjectOrderRequest:
+      type: object
+      required: [projectId, amountInUsdCents]
+      properties:
+        projectId:
+          type: integer
+          minimum: 1
+          description: ID of the project to fund.
+        amountInUsdCents:
+          type: integer
+          minimum: 100
+          description: Amount in USD cents. Minimum 100 ($1.00).
+        note: {type: string}
+        dryRun: {type: boolean}
+        sendReceiptEmail: {type: boolean}
+        paymentMethod:
+          type: string
+          enum: [stripe, credits]
+        onBehalfOfName: {type: string, maxLength: 200}
+        onBehalfOfEmail: {type: string, maxLength: 320}
+    ProjectOrderResponse:
+      type: object
+      properties:
+        id:
+          type: [string, 'null']
+        amountCharged: {type: number}
+        currency: {type: string}
+        impact:
+          type: object
+          properties:
+            tons:
+              type: number
+              description: Included only when the project has cost_per_ton.
+        paymentMethod: {type: string}
+        creditsRemaining: {type: integer}
+        test: {type: boolean}
+    TreeOrderRequest:
+      type: object
+      required: [amountOfTrees]
+      properties:
+        amountOfTrees:
+          type: integer
+          minimum: 1
+          description: Number of trees to plant.
+        paymentMethod:
+          type: string
+          enum: [stripe, credits]
+          default: stripe
+        note: {type: string}
+        dryRun: {type: boolean}
+        onBehalfOfName: {type: string, maxLength: 200}
+        onBehalfOfEmail: {type: string, maxLength: 320}
+    TreeOrderResponse:
+      type: object
+      properties:
+        id:
+          type: [string, 'null']
+          description: Order group ID (Stripe charge ID for Stripe payments, UUID
+            for credits, null for dry runs).
+        amountCharged: {type: number}
+        currency:
+          type: string
+          description: The user's currency code. For credits, always USD.
+        impact:
+          type: object
+          properties:
+            trees: {type: integer}
+        paymentMethod: {type: string}
+        creditsRemaining: {type: integer}
+        test: {type: boolean}
+    TreeOrder:
+      type: object
+      properties:
+        id: {type: string}
+        amountOfTrees: {type: integer}
+        createdAt: {type: string, format: date-time}
+    Portfolio:
+      type: object
+      properties:
+        id: {type: integer}
+        name: {type: string}
+        description: {type: string}
+        cost_per_ton:
+          type: number
+          description: Portfolio-level cost in USD per ton.
+        image_url: {type: string}
+        projects:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
+    Project:
+      type: object
+      properties:
+        id: {type: integer}
+        name: {type: string}
+        description: {type: string}
+        cost_per_ton: {type: number}
+        percentage:
+          type: number
+          description: Allocation fraction (e.g. 0.2 = 20%).
+        image_url: {type: string}
+        certification_status: {type: string}
+    Purchase:
+      type: object
+      properties:
+        stripeChargeId: {type: string}
+        createdAt: {type: string, format: date-time}
+        totalAmountPaidByCustomer:
+          type: integer
+          description: Sum of amounts paid across all orders in this charge (USD cents).
+        totalTons:
+          type: number
+          description: Sum of certified offset tons only.
+        hasOffsetOrders: {type: boolean}
+        hasProjectDonations: {type: boolean}
+        certificateUrl:
+          type: string
+          description: Link to the impact certificate page for this purchase.
+    ProjectDonation:
+      type: object
+      properties:
+        id: {type: string}
+        projectId: {type: integer}
+        userId: {type: integer}
+        amountPaidByCustomer:
+          type: number
+          description: Amount in USD cents; sub-cent fractional values can appear
+            on credit-funded sub-dollar orders split across projects.
+        createdAt: {type: string, format: date-time}
+        source:
+          type: string
+          description: Origin of the donation (e.g. public-api).
+        note: {type: string}
+    CreditLedgerEntry:
+      type: object
+      properties:
+        id: {type: string}
+        amountUsdCents: {type: integer}
+        createdAt: {type: string, format: date-time}
+        description: {type: string}

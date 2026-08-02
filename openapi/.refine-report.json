@@ -1,0 +1,26 @@
+{
+  "provider": "wren",
+  "sources": [
+    "wren-credits-api-openapi.yml",
+    "wren-offset-orders-api-openapi.yml",
+    "wren-portfolios-api-openapi.yml",
+    "wren-project-donations-api-openapi.yml",
+    "wren-project-orders-api-openapi.yml",
+    "wren-purchases-api-openapi.yml",
+    "wren-tree-orders-api-openapi.yml"
+  ],
+  "outputs": [
+    "wren-credits-api-openapi.yml",
+    "wren-offset-orders-api-openapi.yml",
+    "wren-portfolios-api-openapi.yml",
+    "wren-project-donations-api-openapi.yml",
+    "wren-project-orders-api-openapi.yml",
+    "wren-purchases-api-openapi.yml",
+    "wren-tree-orders-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

@@ -1,0 +1,51 @@
+generated: '2026-07-21'
+method: searched
+source:
+  - https://www.wren.co/docs/api
+  - https://www.wren.co/docs/api/quickstart
+  - https://www.wren.co/docs/api/credits
+authentication:
+  style: API token via HTTP Basic (token as username, empty password) or Bearer
+  token_types: [team live (UUID), team test (wren_test_ prefix), legacy personal (UUID)]
+  docs: https://www.wren.co/docs/api#authentication
+  artifact: authentication/wren-authentication.yml
+idempotency:
+  supported: false
+  notes: No idempotency-key mechanism is documented. The API offers a dryRun flag
+    for previews, which is not an idempotency contract.
+pagination:
+  style: limit-offset
+  params: [limit, offset]
+  defaults: {limit: 50, max_limit: 200, offset: 0}
+  applies_to: [GET /api/credits/ledger]
+  notes: List endpoints for orders/purchases/donations return full result sets
+    without documented pagination.
+content_types:
+  request: [application/json, application/x-www-form-urlencoded]
+  response: application/json
+amounts:
+  convention: Monetary amounts are integers in the smallest currency unit
+    (amountCharged 1040 = $10.40 USD); amountInUsdCents fields are USD cents.
+  rounding: amountCharged rounding uses Math.ceil - a fractional cent always
+    rounds up so customers cannot be undercharged.
+  minimums: Stripe payments require a total charge of at least 100 USD cents ($1);
+    Stripe itself enforces a $0.50 minimum. Credits payments have no minimum.
+field_casing:
+  api_responses: camelCase for order/purchase/donation resources
+  public_portfolios: snake_case (cost_per_ton, image_url) unless the expanded
+    query parameter is passed on GET /api/portfolios
+error_envelope:
+  shape: '{"message": "..."}'
+  artifact: errors/wren-problem-types.yml
+versioning:
+  scheme: none-documented
+  notes: No version segment in paths and no versioning policy published.
+rate_limits:
+  documented: false
+test_mode:
+  artifact: sandbox/wren-sandbox.yml
+  notes: wren_test_ tokens exercise full validation with canned responses.
+cross_links:
+  errors: errors/wren-problem-types.yml
+  authentication: authentication/wren-authentication.yml
+  sandbox: sandbox/wren-sandbox.yml

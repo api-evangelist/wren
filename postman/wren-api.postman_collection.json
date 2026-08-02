@@ -1,0 +1,485 @@
+{
+	"info": {
+		"name": "Wren API",
+		"description": "Official Postman collection for the Wren API. Import this collection and set the `api_token` variable to get started.\n\nFull documentation: https://www.wren.co/docs/api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "username",
+				"value": "{{api_token}}",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://www.wren.co",
+			"description": "API base URL."
+		},
+		{
+			"key": "api_token",
+			"value": "",
+			"description": "Your Wren API token from Settings > API Token."
+		}
+	],
+	"item": [
+		{
+			"name": "Offset Orders",
+			"item": [
+				{
+					"name": "POST Create Offset Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"tons\": 1,\n  \"portfolioId\": 12,\n  \"note\": \"Monthly offset\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/offset-orders",
+							"host": ["{{base_url}}"],
+							"path": ["api", "offset-orders"]
+						},
+						"description": "Creates offset orders by allocating a given number of tons across the projects in a portfolio. Funds are distributed according to the portfolio's allocation percentages.\n\n**Minimum:** Total charge must be at least $1.00 when using Stripe. No minimum when using credits."
+					}
+				},
+				{
+					"name": "POST Create Offset Order (Dry Run)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"tons\": 1,\n  \"portfolioId\": 12,\n  \"dryRun\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/offset-orders",
+							"host": ["{{base_url}}"],
+							"path": ["api", "offset-orders"]
+						},
+						"description": "Preview an offset order without being charged. Returns the same response shape but `id` will be `null`."
+					}
+				},
+				{
+					"name": "POST Create Offset Order (Credits)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"tons\": 0.5,\n  \"portfolioId\": 12,\n  \"paymentMethod\": \"credits\",\n  \"note\": \"Offset with credits\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/offset-orders",
+							"host": ["{{base_url}}"],
+							"path": ["api", "offset-orders"]
+						},
+						"description": "Create an offset order paid with credits instead of Stripe. No $1 minimum applies. Response includes `creditsRemaining`."
+					}
+				},
+				{
+					"name": "POST Create Offset Order (On Behalf Of)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"tons\": 1,\n  \"portfolioId\": 12,\n  \"onBehalfOfName\": \"Jane Customer\",\n  \"onBehalfOfEmail\": \"jane@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/offset-orders",
+							"host": ["{{base_url}}"],
+							"path": ["api", "offset-orders"]
+						},
+						"description": "Attribute the offset order to one of your end-customers. `onBehalfOfName` (max 200 chars) appears as the purchaser on the impact certificate; `onBehalfOfEmail` (max 320 chars) is stored alongside the order and is not used to send email. Both fields are optional and can be combined with `paymentMethod: \"credits\"` or `dryRun: true`."
+					}
+				},
+				{
+					"name": "GET List Your Offset Orders",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/offset-orders",
+							"host": ["{{base_url}}"],
+							"path": ["api", "offset-orders"]
+						},
+						"description": "Returns the authenticated user's offset orders with aggregate stats including totalTons, rank, percentile, and equivalency metrics."
+					}
+				}
+			],
+			"description": "Create and list carbon offset orders. An Offset Order represents an order to remove CO2 from the atmosphere using projects in a Portfolio."
+		},
+		{
+			"name": "Project Orders",
+			"item": [
+				{
+					"name": "POST Create Project Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"projectId\": 18,\n  \"amountInUsdCents\": 2500,\n  \"note\": \"Funding this project for Q1 usage\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/project-orders",
+							"host": ["{{base_url}}"],
+							"path": ["api", "project-orders"]
+						},
+						"description": "Fund a specific project by dollar amount. Offsettable projects create offset orders with `impact.tons`. Non-offsettable projects create project donations.\n\n**Minimum:** amountInUsdCents must be at least 100 ($1.00).\n**Note:** Tree-measured projects are not supported — use `/api/tree-orders` instead."
+					}
+				},
+				{
+					"name": "POST Create Project Order (Credits)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"projectId\": 18,\n  \"amountInUsdCents\": 2500,\n  \"paymentMethod\": \"credits\",\n  \"note\": \"Fund project with credits\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/project-orders",
+							"host": ["{{base_url}}"],
+							"path": ["api", "project-orders"]
+						},
+						"description": "Fund a specific project using your credit balance instead of Stripe. Response includes `paymentMethod` and `creditsRemaining`."
+					}
+				},
+				{
+					"name": "POST Create Project Order (Dry Run)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"projectId\": 18,\n  \"amountInUsdCents\": 2500,\n  \"dryRun\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/project-orders",
+							"host": ["{{base_url}}"],
+							"path": ["api", "project-orders"]
+						},
+						"description": "Preview a project order without being charged. Returns the same response shape but `id` will be `null`."
+					}
+				},
+				{
+					"name": "POST Create Project Order (On Behalf Of)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"projectId\": 18,\n  \"amountInUsdCents\": 2500,\n  \"onBehalfOfName\": \"Jane Customer\",\n  \"onBehalfOfEmail\": \"jane@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/project-orders",
+							"host": ["{{base_url}}"],
+							"path": ["api", "project-orders"]
+						},
+						"description": "Attribute the project order to one of your end-customers. `onBehalfOfName` (max 200 chars) appears as the purchaser on the impact certificate; `onBehalfOfEmail` (max 320 chars) is stored alongside the order and is not used to send email. Both fields are optional and can be combined with `paymentMethod: \"credits\"` or `dryRun: true`."
+					}
+				}
+			],
+			"description": "Fund a specific project directly by projectId, without portfolio allocation."
+		},
+		{
+			"name": "Tree Orders",
+			"item": [
+				{
+					"name": "POST Create Tree Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amountOfTrees\": 10,\n  \"note\": \"Tree planting order\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/tree-orders",
+							"host": ["{{base_url}}"],
+							"path": ["api", "tree-orders"]
+						},
+						"description": "Creates a tree order. Charges via Stripe by default. The tree provider is currently fixed to WeForest.\n\n**Required:** `amountOfTrees` (integer > 0)."
+					}
+				},
+				{
+					"name": "POST Create Tree Order (Dry Run)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amountOfTrees\": 10,\n  \"dryRun\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/tree-orders",
+							"host": ["{{base_url}}"],
+							"path": ["api", "tree-orders"]
+						},
+						"description": "Preview a tree order without being charged. Returns the same response shape but `id` will be `null`."
+					}
+				},
+				{
+					"name": "POST Create Tree Order (Credits)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amountOfTrees\": 10,\n  \"paymentMethod\": \"credits\",\n  \"note\": \"Plant trees with credits\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/tree-orders",
+							"host": ["{{base_url}}"],
+							"path": ["api", "tree-orders"]
+						},
+						"description": "Create a tree order paid with credits instead of Stripe. Response includes `paymentMethod` and `creditsRemaining`."
+					}
+				},
+				{
+					"name": "POST Create Tree Order (On Behalf Of)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amountOfTrees\": 10,\n  \"onBehalfOfName\": \"Jane Customer\",\n  \"onBehalfOfEmail\": \"jane@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/tree-orders",
+							"host": ["{{base_url}}"],
+							"path": ["api", "tree-orders"]
+						},
+						"description": "Attribute the tree order to one of your end-customers. `onBehalfOfName` (max 200 chars) appears as the purchaser on the impact certificate; `onBehalfOfEmail` (max 320 chars) is stored alongside the order and is not used to send email. Both fields are optional and can be combined with `paymentMethod: \"credits\"` or `dryRun: true`."
+					}
+				},
+				{
+					"name": "POST Preview Tree Order Pricing",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amountOfTrees\": 10\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/tree-orders/preview",
+							"host": ["{{base_url}}"],
+							"path": ["api", "tree-orders", "preview"]
+						},
+						"description": "Preview pricing for a tree order without placing it. Returns `amountOfTrees`, `priceInUSD`, and `priceInUserCurrency`."
+					}
+				},
+				{
+					"name": "GET List Your Tree Orders",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/tree-orders",
+							"host": ["{{base_url}}"],
+							"path": ["api", "tree-orders"]
+						},
+						"description": "Returns the authenticated user's tree orders including amount of trees, fulfillment status, and payment details."
+					}
+				}
+			],
+			"description": "Create and list tree planting orders. Tree orders fund tree-measured projects by number of trees rather than dollar amount or tons of CO2."
+		},
+		{
+			"name": "Portfolios",
+			"item": [
+				{
+					"name": "GET List Portfolios",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/portfolios",
+							"host": ["{{base_url}}"],
+							"path": ["api", "portfolios"]
+						},
+						"description": "Returns all available portfolios and their project allocations. Authentication is optional — without auth returns preset portfolios only; with auth may include the user's custom portfolio.\n\nAdd `?expanded` query parameter for full CamelCase portfolio objects."
+					}
+				}
+			],
+			"description": "A portfolio is a collection of projects with specific allocation weights. Used when placing Offset Orders."
+		},
+		{
+			"name": "Purchases",
+			"item": [
+				{
+					"name": "GET List Purchases",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/purchases",
+							"host": ["{{base_url}}"],
+							"path": ["api", "purchases"]
+						},
+						"description": "Returns purchase summaries for the authenticated user — Stripe charges grouped by charge ID, with totals and links to impact certificates. Sorted by createdAt descending."
+					}
+				}
+			],
+			"description": "Purchase summaries with totals and impact certificate URLs."
+		},
+		{
+			"name": "Project Donations",
+			"item": [
+				{
+					"name": "GET List Project Donations",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/project-donations",
+							"host": ["{{base_url}}"],
+							"path": ["api", "project-donations"]
+						},
+						"description": "Returns all project donations for the authenticated user. Project donations represent funding for non-offsettable projects (policy, conservation, etc.)."
+					}
+				}
+			],
+			"description": "Non-offsettable project funding records."
+		},
+		{
+			"name": "Credits",
+			"item": [
+				{
+					"name": "POST Top Up Credits",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amountInUsdCents\": 10000\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/credits/top-up",
+							"host": ["{{base_url}}"],
+							"path": ["api", "credits", "top-up"]
+						},
+						"description": "Charges your payment method on file and adds the amount to your credit balance.\n\n**Minimum:** amountInUsdCents must be at least 100 ($1.00)."
+					}
+				},
+				{
+					"name": "GET Get Credit Balance",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/credits/balance",
+							"host": ["{{base_url}}"],
+							"path": ["api", "credits", "balance"]
+						},
+						"description": "Returns the authenticated user's current credit balance in USD cents."
+					}
+				},
+				{
+					"name": "GET List Credit Transactions",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/api/credits/ledger?limit=50&offset=0",
+							"host": ["{{base_url}}"],
+							"path": ["api", "credits", "ledger"],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50",
+									"description": "Number of entries to return (default 50, max 200)"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Number of entries to skip (default 0)"
+								}
+							]
+						},
+						"description": "Returns the authenticated user's credit transaction history, sorted by most recent first. Supports pagination via `limit` and `offset` query parameters. Response includes `total` for the full count. Transaction types: top_up, deduction, refund."
+					}
+				}
+			],
+			"description": "Manage your prepaid credit balance. Top up via Stripe, then use credits to pay for offset orders without per-transaction charges."
+		}
+	]
+}

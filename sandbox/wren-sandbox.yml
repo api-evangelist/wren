@@ -1,0 +1,59 @@
+generated: '2026-07-21'
+method: searched
+source:
+  - https://www.wren.co/docs/api#test-mode
+  - https://www.wren.co/docs/api/quickstart
+name: Wren API test mode
+summary: Wren ships a first-class sandbox. Every API team gets a test token
+  (wren_test_ + UUID) alongside its live token (UUID). Authenticating any write
+  endpoint with a test token runs the full request validation but fires no Stripe
+  charge, writes nothing to the database, and sends no email/Slack/Customer.io
+  notifications.
+modes:
+  - mode: live
+    token_format: UUID (36 chars)
+    notes: Production traffic, billed against the team's credit balance or Stripe
+      payment method.
+  - mode: test
+    token_format: wren_test_<UUID>
+    notes: Sandbox traffic. Realistic canned responses; no charges, offsets, or
+      notifications. Safe to share with teammates and embed in code samples.
+  - mode: legacy-personal
+    token_format: UUID (36 chars)
+    notes: Pre-existing per-user integrations; continue to work indefinitely. New
+      integrations should use team tokens.
+test_identifiers:
+  - id_prefix: test_oo_
+    applies_to: offset orders
+  - id_prefix: test_po_
+    applies_to: project orders
+  - id_prefix: test_to_
+    applies_to: tree orders
+behavior:
+  response_flag: '"test": true is included in every test-mode response'
+  stateless: true
+  canned_balance_usd: '1000.00'
+  canned_balance_note: Test mode is stateless by design - each request resets to
+    a $1,000.00 canned balance. To simulate real balance changes over time, use a
+    live token against a low-funded team.
+  validation: Full request validation runs - a malformed test request gets the same
+    400 a malformed live request would.
+fidelity:
+  mirrors_live:
+    - amountCharged rounding uses Math.ceil (fractional cents always round up)
+    - Stripe minimum charge of $0.50 is enforced; a stripe paymentMethod request
+      below 50 cents returns the same 400 as live, with the hint to use
+      paymentMethod credits instead
+    - Response shape diverges by paymentMethod to match live (credits responses
+      include paymentMethod and creditsRemaining; stripe responses omit both)
+  known_gaps:
+    - Currency is always USD in test responses regardless of the team owner's
+      configured currency; live responses reflect the user's currency. Parse
+      currency defensively before flipping to live.
+  endpoint_gaps:
+    - GET /api/purchases does not currently support test tokens
+    - GET /api/project-donations does not currently support test tokens
+dry_run:
+  field: dryRun
+  notes: Separate from test mode - available on live tokens too. When dryRun is
+    true, no charge is made and the response is a preview only (id is null).

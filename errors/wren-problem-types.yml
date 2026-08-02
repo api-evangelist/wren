@@ -1,0 +1,37 @@
+generated: '2026-07-21'
+method: searched
+source:
+  - https://www.wren.co/docs/api#error-handling
+  - https://www.wren.co/docs/api/quickstart
+format: message-envelope
+envelope:
+  shape: '{"message": "..."}'
+  notes: Wren does not use RFC 9457 problem+json; errors return a JSON body with
+    a message field.
+problems:
+  - status: 400
+    title: Bad Request
+    detail: Invalid payload, missing required fields (e.g. tons, amountInUsdCents,
+      amountOfTrees), charge below the Stripe minimum, validation failure, project
+      ineligible, or tree-measured project sent to /api/project-orders.
+    remediation: Check that required numeric fields are present and positive,
+      Content-Type is application/json, and the body is valid JSON. For sub-$1
+      or sub-$0.50 charges, send paymentMethod credits.
+  - status: 401
+    title: Unauthorized
+    detail: Token not recognized - most commonly a truncated token or whitespace
+      inside the Authorization header (UUIDs are 36 chars; test tokens are
+      wren_test_ + 36).
+    remediation: Re-copy the full token from the API & Credits settings page.
+  - status: 402
+    title: Insufficient credits
+    detail: The team's credit balance is below the order cost on a live call.
+    remediation: Top up at API & Credits settings (POST /api/credits/top-up) or
+      enable auto-refill.
+  - status: 403
+    title: Forbidden
+    detail: Missing or invalid authentication, or account not eligible for the
+      operation (write endpoints require a payment method on file or a credit
+      balance).
+    remediation: Send a valid API token via Basic auth (-u token:) or Bearer
+      header; add a payment method to the team.

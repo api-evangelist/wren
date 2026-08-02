@@ -1,4 +1,16 @@
 aid: wren
+accessModel:
+  pricing: unknown
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Unknown
+  confidence: low
+  source: []
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/wren.png
 name: Wren
 description: Wren is a company surfaced as a portfolio company of union-square-ventures and added to the
   API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
@@ -14,7 +26,63 @@ created: '2026-07-17'
 modified: '2026-07-17'
 tags:
 - Company
-apis: []
+apis:
+- aid: wren:wren-credits-api
+  name: Wren Credits API
+  description: Manage the prepaid credit balance
+  tags:
+  - Credits
+  properties:
+  - type: OpenAPI
+    url: openapi/wren-credits-api-openapi.yml
+- aid: wren:wren-offset-orders-api
+  name: Wren Offset Orders API
+  description: Create and list carbon offset orders by tonnage
+  tags:
+  - Offset Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/wren-offset-orders-api-openapi.yml
+- aid: wren:wren-portfolios-api
+  name: Wren Portfolios API
+  description: List available portfolios and their projects
+  tags:
+  - Portfolios
+  properties:
+  - type: OpenAPI
+    url: openapi/wren-portfolios-api-openapi.yml
+- aid: wren:wren-project-donations-api
+  name: Wren Project Donations API
+  description: List non-offsettable project funding
+  tags:
+  - Project Donations
+  properties:
+  - type: OpenAPI
+    url: openapi/wren-project-donations-api-openapi.yml
+- aid: wren:wren-project-orders-api
+  name: Wren Project Orders API
+  description: Fund a specific project by dollar amount
+  tags:
+  - Project Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/wren-project-orders-api-openapi.yml
+- aid: wren:wren-purchases-api
+  name: Wren Purchases API
+  description: List purchase summaries with certificate URLs
+  tags:
+  - Purchases
+  properties:
+  - type: OpenAPI
+    url: openapi/wren-purchases-api-openapi.yml
+- aid: wren:wren-tree-orders-api
+  name: Wren Tree Orders API
+  description: Create and list tree-planting orders
+  tags:
+  - Tree Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/wren-tree-orders-api-openapi.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
