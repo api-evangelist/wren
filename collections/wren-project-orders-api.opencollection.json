@@ -1,0 +1,40 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Wren Credits Project Orders API",
+    "version": "2026-07-21"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Project Orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fund a specific project by dollar amount",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.wren.co/api/project-orders",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Funds a specific project directly by projectId without portfolio allocation. Offsettable projects (cost_per_ton) create offset orders and the response includes impact.tons; non-offsettable projects create project donations. Tree-measured projects are not supported (use /api/tree-orders)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

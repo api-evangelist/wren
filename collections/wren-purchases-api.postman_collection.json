@@ -1,0 +1,169 @@
+{
+  "item": [
+    {
+      "id": "2886132e-bf2a-4df4-b650-0b8a8e0bb7bb",
+      "name": "Purchases",
+      "description": {
+        "content": "List purchase summaries with certificate URLs",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "763d2c39-2890-4dcf-8373-5014d0bc0256",
+          "name": "List your purchase summaries",
+          "request": {
+            "name": "List your purchase summaries",
+            "description": {
+              "content": "Returns purchase summaries for the authenticated user - Stripe charges grouped by charge ID with totals and links to impact certificates, sorted by createdAt descending. Test tokens are not currently supported on this endpoint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "purchases"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "114ced57-7565-4876-b46f-7cb9bb4a31cd",
+              "name": "Purchase summaries",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "purchases"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"purchases\": [\n    {\n      \"stripeChargeId\": \"string\",\n      \"createdAt\": \"2015-12-12T01:09:37.699Z\",\n      \"totalAmountPaidByCustomer\": 4223,\n      \"totalTons\": 293.8500110239739,\n      \"hasOffsetOrders\": false,\n      \"hasProjectDonations\": true,\n      \"certificateUrl\": \"string\"\n    },\n    {\n      \"stripeChargeId\": \"string\",\n      \"createdAt\": \"1958-04-10T07:34:16.619Z\",\n      \"totalAmountPaidByCustomer\": 5211,\n      \"totalTons\": 3289.859558585931,\n      \"hasOffsetOrders\": false,\n      \"hasProjectDonations\": true,\n      \"certificateUrl\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b007c7ec-b978-446b-a4d5-66ef1a7c4d95",
+              "name": "Missing or invalid authentication, or account not eligible for the operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "purchases"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://www.wren.co",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "38b43bb5-6575-4abf-a54c-341fa6e24bf8",
+    "name": "Wren Credits Purchases API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Wren API is a JSON REST API that lets you offset carbon dioxide through Wren's portfolio of verified carbon sequestration projects. Create offset orders by tonnage, fund specific projects by dollar amount, plant trees, manage a prepaid credit balance, and list portfolios, purchases, and donations. Most endpoints require an API token (team live token, wren_test_ sandbox token, or legacy personal token) via HTTP Basic or Bearer auth.\n\nContact Support:\n Name: Wren Support\n Email: support@wren.co",
+      "type": "text/plain"
+    }
+  }
+}

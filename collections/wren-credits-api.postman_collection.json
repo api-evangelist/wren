@@ -1,0 +1,539 @@
+{
+  "item": [
+    {
+      "id": "7aef76d1-e615-4fbf-bedc-079d25d3a9f8",
+      "name": "Credits",
+      "description": {
+        "content": "Manage the prepaid credit balance",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "49f22fb6-be08-4fb0-85b7-588cb8edc70e",
+          "name": "Add credits to your balance",
+          "request": {
+            "name": "Add credits to your balance",
+            "description": {
+              "content": "Charges the payment method on file and adds the amount to the credit balance. Team tokens top up the team wallet; legacy personal tokens top up the user wallet.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "credits",
+                "top-up"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amountInUsdCents\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6c666bff-c503-473d-8c1d-e54387147f62",
+              "name": "Credits added",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "credits",
+                    "top-up"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amountInUsdCents\": 10000\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"amountCharged\": 8218,\n  \"id\": \"string\",\n  \"creditBalance\": 2971\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4086b349-6a72-48de-b12e-938acfa702d4",
+              "name": "Invalid payload, missing required fields, or validation failure.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "credits",
+                    "top-up"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amountInUsdCents\": 10000\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dc5c9012-03bd-4d7d-9b58-ed1450daa68e",
+              "name": "Missing or invalid authentication, or account not eligible for the operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "credits",
+                    "top-up"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amountInUsdCents\": 10000\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "326d03f5-12cf-4c9b-b831-70d3c793287a",
+          "name": "Get your current credit balance",
+          "request": {
+            "name": "Get your current credit balance",
+            "description": {
+              "content": "Returns the authenticated team or user's current credit balance. Test tokens return a canned $1,000.00 balance.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "credits",
+                "balance"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a459b2f4-d5ee-46c3-b9f5-2f13496864cc",
+              "name": "Current credit balance",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "credits",
+                    "balance"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"creditBalanceUsdCents\": 2028\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3af74157-37f5-4378-bc2d-31a4033c2552",
+              "name": "Missing or invalid authentication, or account not eligible for the operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "credits",
+                    "balance"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "80e53138-9b4e-4041-bdef-b2ecfd945945",
+          "name": "List your credit transactions",
+          "request": {
+            "name": "List your credit transactions",
+            "description": {
+              "content": "Returns the credit transaction history, most recent first. Test tokens return a small canned sample ledger.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "credits",
+                "ledger"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50",
+                  "description": "Number of entries to return."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Number of entries to skip."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5f208798-b1c4-4a1a-913c-8962fc4b4721",
+              "name": "Credit ledger entries",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "credits",
+                    "ledger"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"entries\": [\n    {\n      \"id\": \"string\",\n      \"amountUsdCents\": 8495,\n      \"createdAt\": \"1959-07-20T01:00:20.724Z\",\n      \"description\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"amountUsdCents\": 7063,\n      \"createdAt\": \"1953-01-22T15:12:08.387Z\",\n      \"description\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e8dcede9-6451-4d9e-8088-8ee43ccbe569",
+              "name": "Missing or invalid authentication, or account not eligible for the operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "credits",
+                    "ledger"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://www.wren.co",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "9ec8efbe-bdbd-4428-98b5-3894c76716e1",
+    "name": "Wren Credits API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Wren API is a JSON REST API that lets you offset carbon dioxide through Wren's portfolio of verified carbon sequestration projects. Create offset orders by tonnage, fund specific projects by dollar amount, plant trees, manage a prepaid credit balance, and list portfolios, purchases, and donations. Most endpoints require an API token (team live token, wren_test_ sandbox token, or legacy personal token) via HTTP Basic or Bearer auth.\n\nContact Support:\n Name: Wren Support\n Email: support@wren.co",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Wren Credits Offset Orders API",
+    "version": "2026-07-21"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Offset Orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List your offset orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wren.co/api/offset-orders"
+          },
+          "docs": "Returns the authenticated user's offset orders with aggregate stats."
+        },
+        {
+          "info": {
+            "name": "Create offset orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.wren.co/api/offset-orders",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates offset orders by allocating a given number of tons across the projects in a portfolio. Funds are distributed according to the portfolio's allocation percentages. Test tokens (wren_test_...) return canned responses with \"test\":true and test_oo_ prefixed IDs without charges or side effects."
+        },
+        {
+          "info": {
+            "name": "List public offset orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wren.co/api/offset-orders/public"
+          },
+          "docs": "Lists public offset orders (cached) for leaderboards and feeds. Documented as requiring no authentication."
+        },
+        {
+          "info": {
+            "name": "Get the impact certificate for an order group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wren.co/api/offset-orders/certificate/by-group/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Order group id returned by createOffsetOrder."
+              }
+            ]
+          },
+          "docs": "Fetch the certificate for an offset order group using the order group id returned when the order was created."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

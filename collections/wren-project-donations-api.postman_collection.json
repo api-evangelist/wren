@@ -1,0 +1,169 @@
+{
+  "item": [
+    {
+      "id": "f009e181-993d-4f1f-b75e-34626f496614",
+      "name": "Project Donations",
+      "description": {
+        "content": "List non-offsettable project funding",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "cf4c8085-af49-441f-89a9-99b19ecf0bd4",
+          "name": "List your project donations",
+          "request": {
+            "name": "List your project donations",
+            "description": {
+              "content": "Returns all project donations (funding for non-offsettable projects) for the authenticated user. Test tokens are not currently supported on this endpoint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "project-donations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "dcd6cc6c-e479-4025-aab9-5996b3dd6141",
+              "name": "Project donations",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "project-donations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"projectId\": 2013,\n    \"userId\": 9837,\n    \"amountPaidByCustomer\": 6842.796594071025,\n    \"createdAt\": \"2007-01-07T01:49:53.515Z\",\n    \"source\": \"string\",\n    \"note\": \"string\"\n  },\n  {\n    \"id\": \"string\",\n    \"projectId\": 4068,\n    \"userId\": 7648,\n    \"amountPaidByCustomer\": 74.79382978103577,\n    \"createdAt\": \"1957-04-22T01:16:16.982Z\",\n    \"source\": \"string\",\n    \"note\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "23bfcf26-a2c6-4bd9-a5e7-926ca92a7411",
+              "name": "Missing or invalid authentication, or account not eligible for the operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "project-donations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://www.wren.co",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "28f9c98e-7ed0-48fa-86cc-49cb416e5281",
+    "name": "Wren Credits Project Donations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Wren API is a JSON REST API that lets you offset carbon dioxide through Wren's portfolio of verified carbon sequestration projects. Create offset orders by tonnage, fund specific projects by dollar amount, plant trees, manage a prepaid credit balance, and list portfolios, purchases, and donations. Most endpoints require an API token (team live token, wren_test_ sandbox token, or legacy personal token) via HTTP Basic or Bearer auth.\n\nContact Support:\n Name: Wren Support\n Email: support@wren.co",
+      "type": "text/plain"
+    }
+  }
+}

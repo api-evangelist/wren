@@ -1,0 +1,44 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Wren Credits Portfolios API",
+    "version": "2026-07-21"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Portfolios",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List available portfolios and projects",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wren.co/api/portfolios",
+            "params": [
+              {
+                "name": "expanded",
+                "value": "",
+                "type": "query",
+                "description": "If present, returns full CamelCase portfolio objects instead of the public snake_case format."
+              }
+            ]
+          },
+          "docs": "Returns all available portfolios and their project allocations. Works without authentication (preset portfolios only); with a token it may include the user's custom portfolio."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

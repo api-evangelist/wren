@@ -1,0 +1,697 @@
+{
+  "item": [
+    {
+      "id": "bd7ee587-c91d-4c78-a681-7f3d87360dd6",
+      "name": "Tree Orders",
+      "description": {
+        "content": "Create and list tree-planting orders",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "362d112b-76db-4f06-ab3f-7b20d3e614a3",
+          "name": "Create a tree order",
+          "request": {
+            "name": "Create a tree order",
+            "description": {
+              "content": "Creates a tree order by number of trees, charging via Stripe or credits. Tree orders are currently fulfilled through the WeForest provider.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "tree-orders"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "amountOfTrees",
+                  "value": "<integer>",
+                  "description": "(Required) Number of trees to plant."
+                },
+                {
+                  "disabled": false,
+                  "key": "paymentMethod",
+                  "value": "stripe"
+                },
+                {
+                  "disabled": false,
+                  "key": "note",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dryRun",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "onBehalfOfName",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "onBehalfOfEmail",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7a35409b-9b51-43f6-bf55-b870d0945fd5",
+              "name": "Tree order created (or previewed when dryRun is true)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "tree-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Number of trees to plant.",
+                        "type": "text/plain"
+                      },
+                      "key": "amountOfTrees",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "paymentMethod",
+                      "value": "stripe"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "note",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "dryRun",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "onBehalfOfName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "onBehalfOfEmail",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"amountCharged\": 8263.680780132983,\n  \"currency\": \"string\",\n  \"impact\": {\n    \"trees\": 2705\n  },\n  \"paymentMethod\": \"string\",\n  \"creditsRemaining\": 6428,\n  \"test\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2f2f710e-0e0c-470e-b622-191d754936ea",
+              "name": "Invalid payload, missing required fields, or validation failure.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "tree-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Number of trees to plant.",
+                        "type": "text/plain"
+                      },
+                      "key": "amountOfTrees",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "paymentMethod",
+                      "value": "stripe"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "note",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "dryRun",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "onBehalfOfName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "onBehalfOfEmail",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fab62918-7bb7-4c8a-b172-7d48ad4e9492",
+              "name": "Missing or invalid authentication, or account not eligible for the operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "tree-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Number of trees to plant.",
+                        "type": "text/plain"
+                      },
+                      "key": "amountOfTrees",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "paymentMethod",
+                      "value": "stripe"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "note",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "dryRun",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "onBehalfOfName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "onBehalfOfEmail",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7079f611-2f31-4222-89a1-e4db57c57921",
+          "name": "List your tree orders",
+          "request": {
+            "name": "List your tree orders",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "tree-orders"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f8b1c702-29e7-412f-9389-d19b188f1cde",
+              "name": "The user's tree orders",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "tree-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"treeOrders\": [\n    {\n      \"id\": \"string\",\n      \"amountOfTrees\": 5723,\n      \"createdAt\": \"1986-03-28T06:37:28.042Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"amountOfTrees\": 2178,\n      \"createdAt\": \"2005-03-14T16:43:44.783Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "01047154-abd0-4964-ac5d-0ec45d317b6a",
+              "name": "Missing or invalid authentication, or account not eligible for the operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "tree-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "45f6a932-87a9-42d8-bd79-1c0d64cdd81e",
+          "name": "Preview tree order pricing",
+          "request": {
+            "name": "Preview tree order pricing",
+            "description": {
+              "content": "Returns pricing information for a tree order without placing it.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "tree-orders",
+                "preview"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amountOfTrees\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "34634b99-4b68-4447-af90-8dc795e6fd15",
+              "name": "Tree order pricing preview",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "tree-orders",
+                    "preview"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amountOfTrees\": 10\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"amountOfTrees\": 6721,\n  \"priceInUSD\": 2141.7330736979457,\n  \"priceInUserCurrency\": 9909.697611452344\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "80a2304f-3eb3-4f40-9fa0-ed0726ee9193",
+              "name": "Invalid payload, missing required fields, or validation failure.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "tree-orders",
+                    "preview"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amountOfTrees\": 10\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "86d7492e-bc8f-4eda-b509-37f8158de60e",
+              "name": "Missing or invalid authentication, or account not eligible for the operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "tree-orders",
+                    "preview"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amountOfTrees\": 10\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://www.wren.co",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "32893a23-010a-42d1-a6da-92bf3570afd1",
+    "name": "Wren Credits Tree Orders API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Wren API is a JSON REST API that lets you offset carbon dioxide through Wren's portfolio of verified carbon sequestration projects. Create offset orders by tonnage, fund specific projects by dollar amount, plant trees, manage a prepaid credit balance, and list portfolios, purchases, and donations. Most endpoints require an API token (team live token, wren_test_ sandbox token, or legacy personal token) via HTTP Basic or Bearer auth.\n\nContact Support:\n Name: Wren Support\n Email: support@wren.co",
+      "type": "text/plain"
+    }
+  }
+}

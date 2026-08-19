@@ -1,0 +1,137 @@
+{
+  "item": [
+    {
+      "id": "0c829f2c-268b-40db-afea-5aea7d4d64de",
+      "name": "Portfolios",
+      "description": {
+        "content": "List available portfolios and their projects",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "aba3073e-efcc-4421-8e15-60f0c7fab114",
+          "name": "List available portfolios and projects",
+          "request": {
+            "name": "List available portfolios and projects",
+            "description": {
+              "content": "Returns all available portfolios and their project allocations. Works without authentication (preset portfolios only); with a token it may include the user's custom portfolio.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "portfolios"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "expanded",
+                  "value": "<string>",
+                  "description": "If present, returns full CamelCase portfolio objects instead of the public snake_case format."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "be5e3914-369a-4cc7-933b-3497f2fb772a",
+              "name": "Available portfolios",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "portfolios"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "expanded",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"portfolios\": [\n    {\n      \"id\": 21,\n      \"name\": \"Trailblazer\",\n      \"description\": \"A portfolio focused on cutting-edge carbon removal technology.\",\n      \"cost_per_ton\": 401.71,\n      \"image_url\": \"https://projectwren.imgix.net/trailblazer/trailblazer-icon-square.png\",\n      \"projects\": [\n        {\n          \"id\": 18,\n          \"name\": \"Biochar carbon removal\",\n          \"cost_per_ton\": 242.86,\n          \"percentage\": 0.2099,\n          \"certification_status\": \"standard 2023\"\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://www.wren.co",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "296b29c2-31af-4a56-a762-7465c848497b",
+    "name": "Wren Credits Portfolios API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Wren API is a JSON REST API that lets you offset carbon dioxide through Wren's portfolio of verified carbon sequestration projects. Create offset orders by tonnage, fund specific projects by dollar amount, plant trees, manage a prepaid credit balance, and list portfolios, purchases, and donations. Most endpoints require an API token (team live token, wren_test_ sandbox token, or legacy personal token) via HTTP Basic or Bearer auth.\n\nContact Support:\n Name: Wren Support\n Email: support@wren.co",
+      "type": "text/plain"
+    }
+  }
+}

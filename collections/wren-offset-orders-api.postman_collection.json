@@ -1,0 +1,1022 @@
+{
+  "item": [
+    {
+      "id": "e16df913-3664-45e5-a0ef-c2aa5ee35e43",
+      "name": "Offset Orders",
+      "description": {
+        "content": "Create and list carbon offset orders by tonnage",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "03f61388-eea7-4ad1-ae7f-3aa90c144f63",
+          "name": "Create offset orders",
+          "request": {
+            "name": "Create offset orders",
+            "description": {
+              "content": "Creates offset orders by allocating a given number of tons across the projects in a portfolio. Funds are distributed according to the portfolio's allocation percentages. Test tokens (wren_test_...) return canned responses with \"test\":true and test_oo_ prefixed IDs without charges or side effects.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "offset-orders"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "tons",
+                  "value": "<number>",
+                  "description": "(Required) Amount of CO2e to offset in tonnes. Must be positive."
+                },
+                {
+                  "disabled": false,
+                  "key": "portfolioId",
+                  "value": "<number>",
+                  "description": "Portfolio ID for allocation. Default: Wren Climate Fund."
+                },
+                {
+                  "disabled": false,
+                  "key": "note",
+                  "value": "<string>",
+                  "description": "Note attached to each order."
+                },
+                {
+                  "disabled": false,
+                  "key": "dryRun",
+                  "value": "<boolean>",
+                  "description": "If true, no charge is made; returns preview only."
+                },
+                {
+                  "disabled": false,
+                  "key": "sendReceiptEmail",
+                  "value": "<boolean>",
+                  "description": "If true, sends a receipt email when dryRun is false."
+                },
+                {
+                  "disabled": false,
+                  "key": "paymentMethod",
+                  "value": "stripe",
+                  "description": "When credits, deducts from the credit balance instead of charging Stripe. No $1 minimum when using credits."
+                },
+                {
+                  "disabled": false,
+                  "key": "onBehalfOfName",
+                  "value": "<string>",
+                  "description": "Name of the end customer shown as purchaser on the impact certificate."
+                },
+                {
+                  "disabled": false,
+                  "key": "onBehalfOfEmail",
+                  "value": "<string>",
+                  "description": "Email of the end customer, stored alongside the order."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "914658dc-1298-4c9a-a682-c7bc25d61f17",
+              "name": "Offset order created (or previewed when dryRun is true)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "offset-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Amount of CO2e to offset in tonnes. Must be positive.",
+                        "type": "text/plain"
+                      },
+                      "key": "tons",
+                      "value": "<number>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Portfolio ID for allocation. Default: Wren Climate Fund.",
+                        "type": "text/plain"
+                      },
+                      "key": "portfolioId",
+                      "value": "<number>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Note attached to each order.",
+                        "type": "text/plain"
+                      },
+                      "key": "note",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "If true, no charge is made; returns preview only.",
+                        "type": "text/plain"
+                      },
+                      "key": "dryRun",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "If true, sends a receipt email when dryRun is false.",
+                        "type": "text/plain"
+                      },
+                      "key": "sendReceiptEmail",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "When credits, deducts from the credit balance instead of charging Stripe. No $1 minimum when using credits.",
+                        "type": "text/plain"
+                      },
+                      "key": "paymentMethod",
+                      "value": "stripe"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Name of the end customer shown as purchaser on the impact certificate.",
+                        "type": "text/plain"
+                      },
+                      "key": "onBehalfOfName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Email of the end customer, stored alongside the order.",
+                        "type": "text/plain"
+                      },
+                      "key": "onBehalfOfEmail",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"amountCharged\": 1040,\n  \"currency\": \"USD\",\n  \"tons\": 0.45,\n  \"id\": \"ch_12345\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "30f8b1d7-02d1-4154-82c5-a0ff644556ce",
+              "name": "Invalid payload, missing required fields, or validation failure.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "offset-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Amount of CO2e to offset in tonnes. Must be positive.",
+                        "type": "text/plain"
+                      },
+                      "key": "tons",
+                      "value": "<number>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Portfolio ID for allocation. Default: Wren Climate Fund.",
+                        "type": "text/plain"
+                      },
+                      "key": "portfolioId",
+                      "value": "<number>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Note attached to each order.",
+                        "type": "text/plain"
+                      },
+                      "key": "note",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "If true, no charge is made; returns preview only.",
+                        "type": "text/plain"
+                      },
+                      "key": "dryRun",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "If true, sends a receipt email when dryRun is false.",
+                        "type": "text/plain"
+                      },
+                      "key": "sendReceiptEmail",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "When credits, deducts from the credit balance instead of charging Stripe. No $1 minimum when using credits.",
+                        "type": "text/plain"
+                      },
+                      "key": "paymentMethod",
+                      "value": "stripe"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Name of the end customer shown as purchaser on the impact certificate.",
+                        "type": "text/plain"
+                      },
+                      "key": "onBehalfOfName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Email of the end customer, stored alongside the order.",
+                        "type": "text/plain"
+                      },
+                      "key": "onBehalfOfEmail",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "88b73491-61e9-4ea8-b1c2-959784cd3e94",
+              "name": "Insufficient credits - the team's credit balance is below the order cost.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "offset-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Amount of CO2e to offset in tonnes. Must be positive.",
+                        "type": "text/plain"
+                      },
+                      "key": "tons",
+                      "value": "<number>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Portfolio ID for allocation. Default: Wren Climate Fund.",
+                        "type": "text/plain"
+                      },
+                      "key": "portfolioId",
+                      "value": "<number>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Note attached to each order.",
+                        "type": "text/plain"
+                      },
+                      "key": "note",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "If true, no charge is made; returns preview only.",
+                        "type": "text/plain"
+                      },
+                      "key": "dryRun",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "If true, sends a receipt email when dryRun is false.",
+                        "type": "text/plain"
+                      },
+                      "key": "sendReceiptEmail",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "When credits, deducts from the credit balance instead of charging Stripe. No $1 minimum when using credits.",
+                        "type": "text/plain"
+                      },
+                      "key": "paymentMethod",
+                      "value": "stripe"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Name of the end customer shown as purchaser on the impact certificate.",
+                        "type": "text/plain"
+                      },
+                      "key": "onBehalfOfName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Email of the end customer, stored alongside the order.",
+                        "type": "text/plain"
+                      },
+                      "key": "onBehalfOfEmail",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Payment Required",
+              "code": 402,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0e26997e-8140-43d6-8c7a-08a07da7cc9d",
+              "name": "Missing or invalid authentication, or account not eligible for the operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "offset-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Amount of CO2e to offset in tonnes. Must be positive.",
+                        "type": "text/plain"
+                      },
+                      "key": "tons",
+                      "value": "<number>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Portfolio ID for allocation. Default: Wren Climate Fund.",
+                        "type": "text/plain"
+                      },
+                      "key": "portfolioId",
+                      "value": "<number>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Note attached to each order.",
+                        "type": "text/plain"
+                      },
+                      "key": "note",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "If true, no charge is made; returns preview only.",
+                        "type": "text/plain"
+                      },
+                      "key": "dryRun",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "If true, sends a receipt email when dryRun is false.",
+                        "type": "text/plain"
+                      },
+                      "key": "sendReceiptEmail",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "When credits, deducts from the credit balance instead of charging Stripe. No $1 minimum when using credits.",
+                        "type": "text/plain"
+                      },
+                      "key": "paymentMethod",
+                      "value": "stripe"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Name of the end customer shown as purchaser on the impact certificate.",
+                        "type": "text/plain"
+                      },
+                      "key": "onBehalfOfName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Email of the end customer, stored alongside the order.",
+                        "type": "text/plain"
+                      },
+                      "key": "onBehalfOfEmail",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b264405e-c6da-47d1-9833-8451f0803e5a",
+          "name": "List your offset orders",
+          "request": {
+            "name": "List your offset orders",
+            "description": {
+              "content": "Returns the authenticated user's offset orders with aggregate stats.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "offset-orders"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "740de4eb-4e9e-4edc-8aef-1263d1db3ffd",
+              "name": "The user's offset orders",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "offset-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"offsetOrders\": [\n    {\n      \"id\": \"string\",\n      \"tons\": 5450.623835422718,\n      \"createdAt\": \"1969-09-06T02:55:36.365Z\",\n      \"note\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"tons\": 5547.604479966928,\n      \"createdAt\": \"2016-12-07T07:40:37.229Z\",\n      \"note\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dcb348a8-de3e-4e7f-8f49-9d89abb2c259",
+              "name": "Missing or invalid authentication, or account not eligible for the operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "offset-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "265127d1-e7c9-4f93-8dde-5d737122a63b",
+          "name": "List public offset orders",
+          "request": {
+            "name": "List public offset orders",
+            "description": {
+              "content": "Lists public offset orders (cached) for leaderboards and feeds. Documented as requiring no authentication.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "offset-orders",
+                "public"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a16d8ed0-5369-462e-855a-4a2e430cf935",
+              "name": "Public offset orders",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "offset-orders",
+                    "public"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"tons\": 6154.001907812722,\n    \"createdAt\": \"2011-11-23T17:07:10.867Z\",\n    \"note\": \"string\"\n  },\n  {\n    \"id\": \"string\",\n    \"tons\": 6457.550655730249,\n    \"createdAt\": \"1992-10-28T07:30:16.316Z\",\n    \"note\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7826a8af-a8d1-44af-b137-e56e1f8214d6",
+              "name": "Missing or invalid authentication, or account not eligible for the operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "offset-orders",
+                    "public"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cc254a92-e255-4cd1-b1c6-5426caf0eaab",
+          "name": "Get the impact certificate for an order group",
+          "request": {
+            "name": "Get the impact certificate for an order group",
+            "description": {
+              "content": "Fetch the certificate for an offset order group using the order group id returned when the order was created.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "offset-orders",
+                "certificate",
+                "by-group",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Order group id returned by createOffsetOrder."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "af5adfe4-f4dd-42bb-b25b-c02113c09710",
+              "name": "Certificate for the order group",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "offset-orders",
+                    "certificate",
+                    "by-group",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Order group id returned by createOffsetOrder."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "552aaab1-2cbb-402b-b6a0-361c98a4b855",
+              "name": "Missing or invalid authentication, or account not eligible for the operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "offset-orders",
+                    "certificate",
+                    "by-group",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Order group id returned by createOffsetOrder."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://www.wren.co",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "be2dba5f-5438-4fa1-b531-d8e9114dbd7d",
+    "name": "Wren Credits Offset Orders API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Wren API is a JSON REST API that lets you offset carbon dioxide through Wren's portfolio of verified carbon sequestration projects. Create offset orders by tonnage, fund specific projects by dollar amount, plant trees, manage a prepaid credit balance, and list portfolios, purchases, and donations. Most endpoints require an API token (team live token, wren_test_ sandbox token, or legacy personal token) via HTTP Basic or Bearer auth.\n\nContact Support:\n Name: Wren Support\n Email: support@wren.co",
+      "type": "text/plain"
+    }
+  }
+}

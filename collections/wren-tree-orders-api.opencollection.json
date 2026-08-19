@@ -1,0 +1,66 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Wren Credits Tree Orders API",
+    "version": "2026-07-21"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tree Orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List your tree orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wren.co/api/tree-orders"
+          },
+          "docs": "List your tree orders"
+        },
+        {
+          "info": {
+            "name": "Create a tree order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.wren.co/api/tree-orders",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a tree order by number of trees, charging via Stripe or credits. Tree orders are currently fulfilled through the WeForest provider."
+        },
+        {
+          "info": {
+            "name": "Preview tree order pricing",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.wren.co/api/tree-orders/preview",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns pricing information for a tree order without placing it."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,36 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Wren Credits Project Donations API",
+    "version": "2026-07-21"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Project Donations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List your project donations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wren.co/api/project-donations"
+          },
+          "docs": "Returns all project donations (funding for non-offsettable projects) for the authenticated user. Test tokens are not currently supported on this endpoint."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

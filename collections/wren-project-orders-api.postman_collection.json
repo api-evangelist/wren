@@ -1,0 +1,420 @@
+{
+  "item": [
+    {
+      "id": "9c101d8d-a28c-467d-9d01-3303ef5b4148",
+      "name": "Project Orders",
+      "description": {
+        "content": "Fund a specific project by dollar amount",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d4e8812b-9b36-4736-aff0-a99709b7c452",
+          "name": "Fund a specific project by dollar amount",
+          "request": {
+            "name": "Fund a specific project by dollar amount",
+            "description": {
+              "content": "Funds a specific project directly by projectId without portfolio allocation. Offsettable projects (cost_per_ton) create offset orders and the response includes impact.tons; non-offsettable projects create project donations. Tree-measured projects are not supported (use /api/tree-orders).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "project-orders"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "projectId",
+                  "value": "<integer>",
+                  "description": "(Required) ID of the project to fund."
+                },
+                {
+                  "disabled": false,
+                  "key": "amountInUsdCents",
+                  "value": "<integer>",
+                  "description": "(Required) Amount in USD cents. Minimum 100 ($1.00)."
+                },
+                {
+                  "disabled": false,
+                  "key": "note",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dryRun",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "sendReceiptEmail",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "paymentMethod",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "onBehalfOfName",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "onBehalfOfEmail",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "caff9334-a28a-4ff1-b1ab-a86cc4bcf86f",
+              "name": "Project order created (or previewed when dryRun is true)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "project-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ID of the project to fund.",
+                        "type": "text/plain"
+                      },
+                      "key": "projectId",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Amount in USD cents. Minimum 100 ($1.00).",
+                        "type": "text/plain"
+                      },
+                      "key": "amountInUsdCents",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "note",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "dryRun",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "sendReceiptEmail",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "paymentMethod",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "onBehalfOfName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "onBehalfOfEmail",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"amountCharged\": 7099.460791754085,\n  \"currency\": \"string\",\n  \"impact\": {\n    \"tons\": 2653.6060758983435\n  },\n  \"paymentMethod\": \"string\",\n  \"creditsRemaining\": 9462,\n  \"test\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c7768749-5fe4-4e31-9012-f835805200d8",
+              "name": "Invalid payload, missing required fields, or validation failure.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "project-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ID of the project to fund.",
+                        "type": "text/plain"
+                      },
+                      "key": "projectId",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Amount in USD cents. Minimum 100 ($1.00).",
+                        "type": "text/plain"
+                      },
+                      "key": "amountInUsdCents",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "note",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "dryRun",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "sendReceiptEmail",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "paymentMethod",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "onBehalfOfName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "onBehalfOfEmail",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cbafb8e5-7cdd-467c-950c-bd46c2e46580",
+              "name": "Missing or invalid authentication, or account not eligible for the operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "project-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ID of the project to fund.",
+                        "type": "text/plain"
+                      },
+                      "key": "projectId",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Amount in USD cents. Minimum 100 ($1.00).",
+                        "type": "text/plain"
+                      },
+                      "key": "amountInUsdCents",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "note",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "dryRun",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "sendReceiptEmail",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "paymentMethod",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "onBehalfOfName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "onBehalfOfEmail",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://www.wren.co",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "d59cdbc6-2e1c-4fc4-badd-02399e00d1e8",
+    "name": "Wren Credits Project Orders API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Wren API is a JSON REST API that lets you offset carbon dioxide through Wren's portfolio of verified carbon sequestration projects. Create offset orders by tonnage, fund specific projects by dollar amount, plant trees, manage a prepaid credit balance, and list portfolios, purchases, and donations. Most endpoints require an API token (team live token, wren_test_ sandbox token, or legacy personal token) via HTTP Basic or Bearer auth.\n\nContact Support:\n Name: Wren Support\n Email: support@wren.co",
+      "type": "text/plain"
+    }
+  }
+}

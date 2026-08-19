@@ -1,0 +1,36 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Wren Credits Purchases API",
+    "version": "2026-07-21"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Purchases",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List your purchase summaries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wren.co/api/purchases"
+          },
+          "docs": "Returns purchase summaries for the authenticated user - Stripe charges grouped by charge ID with totals and links to impact certificates, sorted by createdAt descending. Test tokens are not currently supported on this endpoint."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

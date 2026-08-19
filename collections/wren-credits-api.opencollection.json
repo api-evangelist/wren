@@ -1,0 +1,76 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Wren Credits API",
+    "version": "2026-07-21"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Credits",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Add credits to your balance",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.wren.co/api/credits/top-up",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Charges the payment method on file and adds the amount to the credit balance. Team tokens top up the team wallet; legacy personal tokens top up the user wallet."
+        },
+        {
+          "info": {
+            "name": "Get your current credit balance",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wren.co/api/credits/balance"
+          },
+          "docs": "Returns the authenticated team or user's current credit balance. Test tokens return a canned $1,000.00 balance."
+        },
+        {
+          "info": {
+            "name": "List your credit transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wren.co/api/credits/ledger",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of entries to return."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Number of entries to skip."
+              }
+            ]
+          },
+          "docs": "Returns the credit transaction history, most recent first. Test tokens return a small canned sample ledger."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
