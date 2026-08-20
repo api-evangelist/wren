@@ -47,6 +47,8 @@ apis:
   name: Wren Portfolios API
   description: List available portfolios and their projects
   tags:
+  - Portfolio
+  tags_raw:
   - Portfolios
   properties:
   - type: OpenAPI
