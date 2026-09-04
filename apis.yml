@@ -21,6 +21,8 @@ accessModel:
   source: []
   generated: '2026-07-22'
   method: derived
+  source:
+  - {url: 'https://projectwren.com', status: 301, note: 'declared website redirects to https://www.wren.co/ — a different registrable domain (projectwren.com -> wren.co), possible rename or acquisition (probed 2026-09-03, roadmap#169)'}
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/wren.png
 name: Wren
 description: Wren is a company surfaced as a portfolio company of union-square-ventures and added to the
