@@ -44,6 +44,8 @@ apis:
   name: Wren Credits API
   description: Manage the prepaid credit balance
   tags:
+  - Credit
+  tags_raw:
   - Credits
   properties:
   - type: OpenAPI
