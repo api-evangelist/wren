@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Wren Credits Offset Orders API
+  title: Wren Offset Orders API
   description: The Wren API is a JSON REST API that lets you offset carbon dioxide through Wren's portfolio of verified carbon sequestration projects. Create offset orders by tonnage, fund specific projects by dollar amount, plant trees, manage a prepaid credit balance, and list portfolios, purchases, and donations. Most endpoints require an API token (team live token, wren_test_ sandbox token, or legacy personal token) via HTTP Basic or Bearer auth.
   version: '2026-07-21'
   contact:
@@ -139,7 +139,106 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
 components:
+  responses:
+    BadRequest:
+      description: Invalid payload, missing required fields, or validation failure.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Missing or invalid authentication, or account not eligible for the operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InsufficientCredits:
+      description: Insufficient credits - the team's credit balance is below the order cost.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    Portfolio:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        cost_per_ton:
+          type: number
+          description: Portfolio-level cost in USD per ton.
+        image_url:
+          type: string
+        projects:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        cost_per_ton:
+          type: number
+        percentage:
+          type: number
+          description: Allocation fraction (e.g. 0.2 = 20%).
+        image_url:
+          type: string
+        certification_status:
+          type: string
+    OffsetOrder:
+      type: object
+      properties:
+        id:
+          type: string
+        tons:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+        note:
+          type: string
+    OffsetOrderResponse:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          description: Stripe charge ID / order group id, or null when dryRun=true.
+        amountCharged:
+          type: number
+          description: In the user currency's smallest denomination (e.g. 1040 = $10.40 USD). Fractional cents round up (Math.ceil).
+        currency:
+          type: string
+        tons:
+          type: number
+        portfolio:
+          $ref: '#/components/schemas/Portfolio'
+        paymentMethod:
+          type: string
+          description: Present only on credits responses.
+        creditsRemaining:
+          type: integer
+          description: Remaining credit balance in USD cents; present only on credits responses.
+        test:
+          type: boolean
+          description: Present and true only in test mode responses.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Human-readable description of the validation or auth failure.
     OffsetOrderRequest:
       type: object
       required:
@@ -175,105 +274,6 @@ components:
           type: string
           maxLength: 320
           description: Email of the end customer, stored alongside the order.
-    Project:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        description:
-          type: string
-        cost_per_ton:
-          type: number
-        percentage:
-          type: number
-          description: Allocation fraction (e.g. 0.2 = 20%).
-        image_url:
-          type: string
-        certification_status:
-          type: string
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Human-readable description of the validation or auth failure.
-    OffsetOrderResponse:
-      type: object
-      properties:
-        id:
-          type:
-          - string
-          - 'null'
-          description: Stripe charge ID / order group id, or null when dryRun=true.
-        amountCharged:
-          type: number
-          description: In the user currency's smallest denomination (e.g. 1040 = $10.40 USD). Fractional cents round up (Math.ceil).
-        currency:
-          type: string
-        tons:
-          type: number
-        portfolio:
-          $ref: '#/components/schemas/Portfolio'
-        paymentMethod:
-          type: string
-          description: Present only on credits responses.
-        creditsRemaining:
-          type: integer
-          description: Remaining credit balance in USD cents; present only on credits responses.
-        test:
-          type: boolean
-          description: Present and true only in test mode responses.
-    Portfolio:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        description:
-          type: string
-        cost_per_ton:
-          type: number
-          description: Portfolio-level cost in USD per ton.
-        image_url:
-          type: string
-        projects:
-          type: array
-          items:
-            $ref: '#/components/schemas/Project'
-    OffsetOrder:
-      type: object
-      properties:
-        id:
-          type: string
-        tons:
-          type: number
-        createdAt:
-          type: string
-          format: date-time
-        note:
-          type: string
-  responses:
-    Forbidden:
-      description: Missing or invalid authentication, or account not eligible for the operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Invalid payload, missing required fields, or validation failure.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    InsufficientCredits:
-      description: Insufficient credits - the team's credit balance is below the order cost.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

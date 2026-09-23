@@ -1,13 +1,7 @@
 {
   "provider": "wren",
   "sources": [
-    "wren-credits-api-openapi.yml",
-    "wren-offset-orders-api-openapi.yml",
-    "wren-portfolios-api-openapi.yml",
-    "wren-project-donations-api-openapi.yml",
-    "wren-project-orders-api-openapi.yml",
-    "wren-purchases-api-openapi.yml",
-    "wren-tree-orders-api-openapi.yml"
+    "_original/wren-api-openapi.yml"
   ],
   "outputs": [
     "wren-credits-api-openapi.yml",
@@ -21,6 +15,18 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "wren-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "wren-credits-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wren-offset-orders-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wren-portfolios-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wren-project-donations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wren-project-orders-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wren-purchases-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wren-tree-orders-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
