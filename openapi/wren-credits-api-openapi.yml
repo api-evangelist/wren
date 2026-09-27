@@ -120,6 +120,12 @@ paths:
           $ref: '#/components/responses/Forbidden'
 components:
   schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Human-readable description of the validation or auth failure.
     CreditLedgerEntry:
       type: object
       properties:
@@ -132,21 +138,15 @@ components:
           format: date-time
         description:
           type: string
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Human-readable description of the validation or auth failure.
   responses:
-    Forbidden:
-      description: Missing or invalid authentication, or account not eligible for the operation.
+    BadRequest:
+      description: Invalid payload, missing required fields, or validation failure.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Invalid payload, missing required fields, or validation failure.
+    Forbidden:
+      description: Missing or invalid authentication, or account not eligible for the operation.
       content:
         application/json:
           schema:
