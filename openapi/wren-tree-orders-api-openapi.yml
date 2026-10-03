@@ -116,19 +116,6 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
 components:
-  responses:
-    Forbidden:
-      description: Missing or invalid authentication, or account not eligible for the operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Invalid payload, missing required fields, or validation failure.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
     TreeOrderRequest:
       type: object
@@ -155,16 +142,6 @@ components:
         onBehalfOfEmail:
           type: string
           maxLength: 320
-    TreeOrder:
-      type: object
-      properties:
-        id:
-          type: string
-        amountOfTrees:
-          type: integer
-        createdAt:
-          type: string
-          format: date-time
     TreeOrderResponse:
       type: object
       properties:
@@ -189,12 +166,35 @@ components:
           type: integer
         test:
           type: boolean
+    TreeOrder:
+      type: object
+      properties:
+        id:
+          type: string
+        amountOfTrees:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
     Error:
       type: object
       properties:
         message:
           type: string
           description: Human-readable description of the validation or auth failure.
+  responses:
+    BadRequest:
+      description: Invalid payload, missing required fields, or validation failure.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Missing or invalid authentication, or account not eligible for the operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

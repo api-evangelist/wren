@@ -139,25 +139,6 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
 components:
-  responses:
-    Forbidden:
-      description: Missing or invalid authentication, or account not eligible for the operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Invalid payload, missing required fields, or validation failure.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    InsufficientCredits:
-      description: Insufficient credits - the team's credit balance is below the order cost.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
     Project:
       type: object
@@ -176,6 +157,18 @@ components:
         image_url:
           type: string
         certification_status:
+          type: string
+    OffsetOrder:
+      type: object
+      properties:
+        id:
+          type: string
+        tons:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+        note:
           type: string
     OffsetOrderResponse:
       type: object
@@ -203,6 +196,24 @@ components:
         test:
           type: boolean
           description: Present and true only in test mode responses.
+    Portfolio:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        cost_per_ton:
+          type: number
+          description: Portfolio-level cost in USD per ton.
+        image_url:
+          type: string
+        projects:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
     OffsetOrderRequest:
       type: object
       required:
@@ -238,42 +249,31 @@ components:
           type: string
           maxLength: 320
           description: Email of the end customer, stored alongside the order.
-    Portfolio:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        description:
-          type: string
-        cost_per_ton:
-          type: number
-          description: Portfolio-level cost in USD per ton.
-        image_url:
-          type: string
-        projects:
-          type: array
-          items:
-            $ref: '#/components/schemas/Project'
     Error:
       type: object
       properties:
         message:
           type: string
           description: Human-readable description of the validation or auth failure.
-    OffsetOrder:
-      type: object
-      properties:
-        id:
-          type: string
-        tons:
-          type: number
-        createdAt:
-          type: string
-          format: date-time
-        note:
-          type: string
+  responses:
+    InsufficientCredits:
+      description: Insufficient credits - the team's credit balance is below the order cost.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid payload, missing required fields, or validation failure.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Missing or invalid authentication, or account not eligible for the operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

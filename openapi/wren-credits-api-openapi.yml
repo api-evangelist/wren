@@ -119,25 +119,6 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
 components:
-  schemas:
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Human-readable description of the validation or auth failure.
-    CreditLedgerEntry:
-      type: object
-      properties:
-        id:
-          type: string
-        amountUsdCents:
-          type: integer
-        createdAt:
-          type: string
-          format: date-time
-        description:
-          type: string
   responses:
     BadRequest:
       description: Invalid payload, missing required fields, or validation failure.
@@ -151,6 +132,25 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  schemas:
+    CreditLedgerEntry:
+      type: object
+      properties:
+        id:
+          type: string
+        amountUsdCents:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        description:
+          type: string
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Human-readable description of the validation or auth failure.
   securitySchemes:
     basicAuth:
       type: http
