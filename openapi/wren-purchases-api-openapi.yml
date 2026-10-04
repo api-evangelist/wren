@@ -40,7 +40,20 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
 components:
+  responses:
+    Forbidden:
+      description: Missing or invalid authentication, or account not eligible for the operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Human-readable description of the validation or auth failure.
     Purchase:
       type: object
       properties:
@@ -62,19 +75,6 @@ components:
         certificateUrl:
           type: string
           description: Link to the impact certificate page for this purchase.
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Human-readable description of the validation or auth failure.
-  responses:
-    Forbidden:
-      description: Missing or invalid authentication, or account not eligible for the operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

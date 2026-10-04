@@ -63,24 +63,6 @@ paths:
                         certification_status: standard 2023
 components:
   schemas:
-    Project:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        description:
-          type: string
-        cost_per_ton:
-          type: number
-        percentage:
-          type: number
-          description: Allocation fraction (e.g. 0.2 = 20%).
-        image_url:
-          type: string
-        certification_status:
-          type: string
     Portfolio:
       type: object
       properties:
@@ -99,6 +81,24 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Project'
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        cost_per_ton:
+          type: number
+        percentage:
+          type: number
+          description: Allocation fraction (e.g. 0.2 = 20%).
+        image_url:
+          type: string
+        certification_status:
+          type: string
   securitySchemes:
     basicAuth:
       type: http

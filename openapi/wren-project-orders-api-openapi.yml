@@ -63,6 +63,29 @@ paths:
           $ref: '#/components/responses/Forbidden'
 components:
   schemas:
+    ProjectOrderResponse:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+        amountCharged:
+          type: number
+        currency:
+          type: string
+        impact:
+          type: object
+          properties:
+            tons:
+              type: number
+              description: Included only when the project has cost_per_ton.
+        paymentMethod:
+          type: string
+        creditsRemaining:
+          type: integer
+        test:
+          type: boolean
     ProjectOrderRequest:
       type: object
       required:
@@ -94,29 +117,6 @@ components:
         onBehalfOfEmail:
           type: string
           maxLength: 320
-    ProjectOrderResponse:
-      type: object
-      properties:
-        id:
-          type:
-          - string
-          - 'null'
-        amountCharged:
-          type: number
-        currency:
-          type: string
-        impact:
-          type: object
-          properties:
-            tons:
-              type: number
-              description: Included only when the project has cost_per_ton.
-        paymentMethod:
-          type: string
-        creditsRemaining:
-          type: integer
-        test:
-          type: boolean
     Error:
       type: object
       properties:
@@ -124,14 +124,14 @@ components:
           type: string
           description: Human-readable description of the validation or auth failure.
   responses:
-    BadRequest:
-      description: Invalid payload, missing required fields, or validation failure.
+    Forbidden:
+      description: Missing or invalid authentication, or account not eligible for the operation.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Missing or invalid authentication, or account not eligible for the operation.
+    BadRequest:
+      description: Invalid payload, missing required fields, or validation failure.
       content:
         application/json:
           schema:
