@@ -63,6 +63,12 @@ paths:
           $ref: '#/components/responses/Forbidden'
 components:
   schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Human-readable description of the validation or auth failure.
     ProjectOrderResponse:
       type: object
       properties:
@@ -117,12 +123,6 @@ components:
         onBehalfOfEmail:
           type: string
           maxLength: 320
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Human-readable description of the validation or auth failure.
   responses:
     Forbidden:
       description: Missing or invalid authentication, or account not eligible for the operation.

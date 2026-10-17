@@ -140,6 +140,32 @@ paths:
           $ref: '#/components/responses/Forbidden'
 components:
   schemas:
+    OffsetOrderResponse:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          description: Stripe charge ID / order group id, or null when dryRun=true.
+        amountCharged:
+          type: number
+          description: In the user currency's smallest denomination (e.g. 1040 = $10.40 USD). Fractional cents round up (Math.ceil).
+        currency:
+          type: string
+        tons:
+          type: number
+        portfolio:
+          $ref: '#/components/schemas/Portfolio'
+        paymentMethod:
+          type: string
+          description: Present only on credits responses.
+        creditsRemaining:
+          type: integer
+          description: Remaining credit balance in USD cents; present only on credits responses.
+        test:
+          type: boolean
+          description: Present and true only in test mode responses.
     Portfolio:
       type: object
       properties:
@@ -158,36 +184,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Project'
-    Project:
+    Error:
       type: object
       properties:
-        id:
-          type: integer
-        name:
+        message:
           type: string
-        description:
-          type: string
-        cost_per_ton:
-          type: number
-        percentage:
-          type: number
-          description: Allocation fraction (e.g. 0.2 = 20%).
-        image_url:
-          type: string
-        certification_status:
-          type: string
-    OffsetOrder:
-      type: object
-      properties:
-        id:
-          type: string
-        tons:
-          type: number
-        createdAt:
-          type: string
-          format: date-time
-        note:
-          type: string
+          description: Human-readable description of the validation or auth failure.
     OffsetOrderRequest:
       type: object
       required:
@@ -223,38 +225,36 @@ components:
           type: string
           maxLength: 320
           description: Email of the end customer, stored alongside the order.
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Human-readable description of the validation or auth failure.
-    OffsetOrderResponse:
+    Project:
       type: object
       properties:
         id:
-          type:
-          - string
-          - 'null'
-          description: Stripe charge ID / order group id, or null when dryRun=true.
-        amountCharged:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        cost_per_ton:
           type: number
-          description: In the user currency's smallest denomination (e.g. 1040 = $10.40 USD). Fractional cents round up (Math.ceil).
-        currency:
+        percentage:
+          type: number
+          description: Allocation fraction (e.g. 0.2 = 20%).
+        image_url:
+          type: string
+        certification_status:
+          type: string
+    OffsetOrder:
+      type: object
+      properties:
+        id:
           type: string
         tons:
           type: number
-        portfolio:
-          $ref: '#/components/schemas/Portfolio'
-        paymentMethod:
+        createdAt:
           type: string
-          description: Present only on credits responses.
-        creditsRemaining:
-          type: integer
-          description: Remaining credit balance in USD cents; present only on credits responses.
-        test:
-          type: boolean
-          description: Present and true only in test mode responses.
+          format: date-time
+        note:
+          type: string
   responses:
     InsufficientCredits:
       description: Insufficient credits - the team's credit balance is below the order cost.

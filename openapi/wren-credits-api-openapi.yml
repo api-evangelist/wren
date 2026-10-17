@@ -139,14 +139,14 @@ components:
           type: string
           description: Human-readable description of the validation or auth failure.
   responses:
-    BadRequest:
-      description: Invalid payload, missing required fields, or validation failure.
+    Forbidden:
+      description: Missing or invalid authentication, or account not eligible for the operation.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Missing or invalid authentication, or account not eligible for the operation.
+    BadRequest:
+      description: Invalid payload, missing required fields, or validation failure.
       content:
         application/json:
           schema:

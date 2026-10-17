@@ -63,24 +63,6 @@ paths:
                         certification_status: standard 2023
 components:
   schemas:
-    Portfolio:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        description:
-          type: string
-        cost_per_ton:
-          type: number
-          description: Portfolio-level cost in USD per ton.
-        image_url:
-          type: string
-        projects:
-          type: array
-          items:
-            $ref: '#/components/schemas/Project'
     Project:
       type: object
       properties:
@@ -99,6 +81,24 @@ components:
           type: string
         certification_status:
           type: string
+    Portfolio:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        cost_per_ton:
+          type: number
+          description: Portfolio-level cost in USD per ton.
+        image_url:
+          type: string
+        projects:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
   securitySchemes:
     basicAuth:
       type: http
